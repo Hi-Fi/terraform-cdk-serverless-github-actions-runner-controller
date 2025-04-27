@@ -1,0 +1,504 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyConstruct should synthesize 1`] = `
+"{
+  "data": {
+    "azapi_resource_action": {
+      "my-construct_storageAccessKeys_0699D59D": {
+        "action": "listKeys",
+        "depends_on": [
+          "azapi_resource.my-construct_storageAccount_C2767EFC"
+        ],
+        "resource_id": "\${azapi_resource.my-construct_storageAccount_C2767EFC.id}",
+        "response_export_values": {
+          "0": "*"
+        },
+        "type": "Microsoft.Storage/storageAccounts@2023-01-01"
+      }
+    },
+    "azurerm_subscription": {
+      "my-construct_sub_070A3ED3": {
+      }
+    }
+  },
+  "provider": {
+    "azapi": [
+      {
+      }
+    ],
+    "azurerm": [
+      {
+        "features": [
+          {
+          }
+        ]
+      }
+    ],
+    "random": [
+      {
+      }
+    ]
+  },
+  "resource": {
+    "azapi_resource": {
+      "my-construct_acaenv_7FE7BF6B": {
+        "body": {
+          "properties": {
+            "appLogsConfiguration": {
+              "destination": "log-analytics",
+              "logAnalyticsConfiguration": {
+                "customerId": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.workspace_id}",
+                "sharedKey": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.primary_shared_key}"
+              }
+            },
+            "infrastructureResourceGroup": "managed-aca-rg",
+            "workloadProfiles": [
+              {
+                "name": "Consumption",
+                "workloadProfileType": "Consumption"
+              }
+            ]
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "gha-runner-environment",
+        "parent_id": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}",
+        "type": "Microsoft.App/managedEnvironments@2024-03-01"
+      },
+      "my-construct_autoscalerCache_CDB25478": {
+        "body": {
+          "properties": {
+            "sourceRepository": "ghcr.io/hi-fi/gha-runners-on-managed-env",
+            "targetRepository": "autoscaler"
+          }
+        },
+        "name": "autoscaler-cache",
+        "parent_id": "\${azurerm_container_registry.my-construct_acr_A9610537.id}",
+        "type": "Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview"
+      },
+      "my-construct_externalsShare_259133E9": {
+        "body": {
+          "properties": {
+            "enabledProtocols": "SMB"
+          }
+        },
+        "name": "ghaexternalsshare",
+        "parent_id": "\${azapi_resource.my-construct_storageAccount_C2767EFC.id}/fileServices/default",
+        "type": "Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01"
+      },
+      "my-construct_ghaRunnerJob_0E7EE2D9": {
+        "body": {
+          "properties": {
+            "configuration": {
+              "manualTriggerConfig": {
+                "parallelism": 1,
+                "replicaCompletionCount": 1
+              },
+              "registries": [
+                {
+                  "identity": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}",
+                  "server": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}"
+                }
+              ],
+              "replicaTimeout": 1200,
+              "triggerType": "Manual"
+            },
+            "environmentId": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+            "template": {
+              "containers": [
+                {
+                  "command": [
+                    "/bin/sh",
+                    "-c",
+                    "export EXECID=$(cat /proc/sys/kernel/random/uuid) && mkdir -p /tmp/_work/$EXECID && ln -s /tmp/_work/$EXECID _work && /home/runner/run.sh ; rm -r /tmp/_work/$EXECID"
+                  ],
+                  "env": [
+                    {
+                      "name": "APPSETTING_WEBSITE_SITE_NAME",
+                      "value": "identity-workaround"
+                    },
+                    {
+                      "name": "AZURE_CLIENT_ID",
+                      "value": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.client_id}"
+                    },
+                    {
+                      "name": "RG_NAME",
+                      "value": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+                    },
+                    {
+                      "name": "LOG_ID",
+                      "value": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.workspace_id}"
+                    },
+                    {
+                      "name": "STORAGE_NAME",
+                      "value": "\${azurerm_container_app_environment_storage.my-construct_acaenvstorage_B28CA1DB.name}"
+                    },
+                    {
+                      "name": "EXTERNAL_STORAGE_NAME",
+                      "value": "\${azurerm_container_app_environment_storage.my-construct_acaexternalstorage_EE73C5CB.name}"
+                    },
+                    {
+                      "name": "SUBSCRIPTION_ID",
+                      "value": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.subscription_id}"
+                    },
+                    {
+                      "name": "ACA_ENVIRONMENT_ID",
+                      "value": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}"
+                    }
+                  ],
+                  "image": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}/root-actions-runner:latest",
+                  "name": "main",
+                  "resources": {
+                    "cpu": 1,
+                    "memory": "2Gi"
+                  },
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/tmp/_work",
+                      "volumeName": "work"
+                    },
+                    {
+                      "mountPath": "/tmp/externals",
+                      "volumeName": "externals"
+                    }
+                  ]
+                }
+              ],
+              "volumes": [
+                {
+                  "mountOptions": "mfsymlinks",
+                  "name": "work",
+                  "storageName": "\${azurerm_container_app_environment_storage.my-construct_acaenvstorage_B28CA1DB.name}",
+                  "storageType": "AzureFile"
+                },
+                {
+                  "mountOptions": "mfsymlinks",
+                  "name": "externals",
+                  "storageName": "\${azurerm_container_app_environment_storage.my-construct_acaexternalstorage_EE73C5CB.name}",
+                  "storageType": "AzureFile"
+                }
+              ]
+            }
+          }
+        },
+        "depends_on": [
+          "azapi_resource.my-construct_runnerCache_A488AA96"
+        ],
+        "identity": [
+          {
+            "identity_ids": [
+              "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}"
+            ],
+            "type": "UserAssigned"
+          }
+        ],
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "gha-runner-job-01",
+        "parent_id": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}",
+        "type": "Microsoft.App/jobs@2024-02-02-preview"
+      },
+      "my-construct_runnerCache_A488AA96": {
+        "body": {
+          "properties": {
+            "sourceRepository": "ghcr.io/hi-fi/root-actions-runner",
+            "targetRepository": "root-actions-runner"
+          }
+        },
+        "name": "root-runner-cache",
+        "parent_id": "\${azurerm_container_registry.my-construct_acr_A9610537.id}",
+        "type": "Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview"
+      },
+      "my-construct_storageAccount_C2767EFC": {
+        "body": {
+          "kind": "StorageV2",
+          "properties": {
+            "largeFileSharesState": "Enabled"
+          },
+          "sku": {
+            "name": "Standard_LRS"
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "ghastorageaccount\${random_string.my-construct_randomSuffix_138F764D.result}",
+        "parent_id": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}",
+        "response_export_values": {
+        },
+        "type": "Microsoft.Storage/storageAccounts@2023-01-01"
+      },
+      "my-construct_storageShare_FCD6F27E": {
+        "body": {
+          "properties": {
+            "enabledProtocols": "SMB"
+          }
+        },
+        "name": "ghaexampleshare",
+        "parent_id": "\${azapi_resource.my-construct_storageAccount_C2767EFC.id}/fileServices/default",
+        "type": "Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01"
+      }
+    },
+    "azurerm_container_app": {
+      "my-construct_autoscalerApp_633D1A5D": {
+        "container_app_environment_id": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+        "depends_on": [
+          "azapi_resource.my-construct_autoscalerCache_CDB25478"
+        ],
+        "identity": {
+          "identity_ids": [
+            "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}"
+          ],
+          "type": "SystemAssigned, UserAssigned"
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags",
+            "workload_profile_name"
+          ]
+        },
+        "name": "autoscaler-app-01",
+        "registry": [
+          {
+            "identity": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}",
+            "server": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}"
+          }
+        ],
+        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}",
+        "revision_mode": "Single",
+        "secret": [
+          {
+            "name": "pat",
+            "value": "\${var.my-construct_PAT_8890AE2B}"
+          }
+        ],
+        "template": {
+          "container": [
+            {
+              "cpu": 0.25,
+              "env": [
+                {
+                  "name": "PAT",
+                  "secret_name": "pat"
+                },
+                {
+                  "name": "GITHUB_CONFIG_URL",
+                  "value": "\${var.my-construct_github_config_url_D9E0826F}"
+                },
+                {
+                  "name": "AZURE_TENANT_ID",
+                  "value": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.tenant_id}"
+                },
+                {
+                  "name": "SUBSCRIPTION_ID",
+                  "value": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.subscription_id}"
+                },
+                {
+                  "name": "RESOURCE_GROUP_NAME",
+                  "value": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+                },
+                {
+                  "name": "JOB_NAME",
+                  "value": "\${azapi_resource.my-construct_ghaRunnerJob_0E7EE2D9.name}"
+                },
+                {
+                  "name": "SCALE_SET_NAME",
+                  "value": "aca-runner-set"
+                }
+              ],
+              "image": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}/autoscaler:test",
+              "memory": "0.5Gi",
+              "name": "autoscaler"
+            }
+          ]
+        }
+      }
+    },
+    "azurerm_container_app_environment_storage": {
+      "my-construct_acaenvstorage_B28CA1DB": {
+        "access_key": "\${element(element(data.azapi_resource_action.my-construct_storageAccessKeys_0699D59D.output[\\"0\\"], 0), 0).value}",
+        "access_mode": "ReadWrite",
+        "account_name": "\${azapi_resource.my-construct_storageAccount_C2767EFC.name}",
+        "container_app_environment_id": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+        "depends_on": [
+          "azapi_resource.my-construct_storageShare_FCD6F27E"
+        ],
+        "name": "gharunnerjobstorage",
+        "share_name": "\${azapi_resource.my-construct_storageShare_FCD6F27E.name}"
+      },
+      "my-construct_acaexternalstorage_EE73C5CB": {
+        "access_key": "\${element(element(data.azapi_resource_action.my-construct_storageAccessKeys_0699D59D.output[\\"0\\"], 0), 0).value}",
+        "access_mode": "ReadWrite",
+        "account_name": "\${azapi_resource.my-construct_storageAccount_C2767EFC.name}",
+        "container_app_environment_id": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+        "depends_on": [
+          "azapi_resource.my-construct_externalsShare_259133E9"
+        ],
+        "name": "gharunnerexternalstorage",
+        "share_name": "\${azapi_resource.my-construct_externalsShare_259133E9.name}"
+      }
+    },
+    "azurerm_container_registry": {
+      "my-construct_acr_A9610537": {
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "runneracr\${random_string.my-construct_randomSuffix_138F764D.result}",
+        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}",
+        "sku": "Basic"
+      }
+    },
+    "azurerm_log_analytics_workspace": {
+      "my-construct_log_5A24524B": {
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "gha-example-logs",
+        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+      }
+    },
+    "azurerm_resource_group": {
+      "my-construct_rg_7FCC6D0A": {
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "gha-runner-rg"
+      }
+    },
+    "azurerm_role_assignment": {
+      "my-construct_actionContainerStartRoleAssignment_BAD7777D": {
+        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+        "role_definition_id": "\${azurerm_role_definition.my-construct_jobCreationRole_53DFA4B3.role_definition_resource_id}",
+        "scope": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}"
+      },
+      "my-construct_imagePushRoleAssignment_40D49BA6": {
+        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+        "role_definition_name": "AcrPush",
+        "scope": "\${azurerm_container_registry.my-construct_acr_A9610537.id}"
+      },
+      "my-construct_jobLogReadAssignment_5CF294BF": {
+        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+        "role_definition_name": "Log Analytics Reader",
+        "scope": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.id}"
+      },
+      "my-construct_roleAssignment_98421EF4": {
+        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+        "role_definition_name": "AcrPull",
+        "scope": "\${azurerm_container_registry.my-construct_acr_A9610537.id}"
+      },
+      "my-construct_scaleJobRoleAssignment_17ACDDF9": {
+        "principal_id": "\${azurerm_container_app.my-construct_autoscalerApp_633D1A5D.identity[0].principal_id}",
+        "role_definition_id": "\${azurerm_role_definition.my-construct_jobRole_8C0D24F7.role_definition_resource_id}",
+        "scope": "\${azapi_resource.my-construct_ghaRunnerJob_0E7EE2D9.id}"
+      }
+    },
+    "azurerm_role_definition": {
+      "my-construct_jobCreationRole_53DFA4B3": {
+        "name": "gha-example-revision-create-role-\${random_string.my-construct_randomSuffix_138F764D.result}",
+        "permissions": [
+          {
+            "actions": [
+              "microsoft.app/jobs/start/action",
+              "microsoft.app/jobs/stop/action",
+              "microsoft.app/jobs/read",
+              "microsoft.app/jobs/write",
+              "microsoft.app/jobs/executions/read",
+              "microsoft.app/managedEnvironments/join/action",
+              "microsoft.app/jobs/delete"
+            ]
+          }
+        ],
+        "scope": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.id}"
+      },
+      "my-construct_jobRole_8C0D24F7": {
+        "name": "gha-example-revision-start-role-\${random_string.my-construct_randomSuffix_138F764D.result}",
+        "permissions": [
+          {
+            "actions": [
+              "microsoft.app/jobs/start/action",
+              "microsoft.app/jobs/stop/action",
+              "microsoft.app/jobs/read",
+              "microsoft.app/jobs/executions/read"
+            ]
+          }
+        ],
+        "scope": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.id}"
+      }
+    },
+    "azurerm_user_assigned_identity": {
+      "my-construct_identity_8FC2225A": {
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "\${var.my-construct_location_F378F07D}",
+        "name": "aca-acr-access",
+        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+      }
+    },
+    "random_string": {
+      "my-construct_randomSuffix_138F764D": {
+        "length": 6,
+        "special": false,
+        "upper": false
+      }
+    }
+  },
+  "terraform": {
+    "required_providers": {
+      "azapi": {
+        "source": "azure/azapi",
+        "version": "2.3.0"
+      },
+      "azurerm": {
+        "source": "azurerm",
+        "version": "4.27.0"
+      },
+      "random": {
+        "source": "hashicorp/random",
+        "version": "3.7.2"
+      }
+    }
+  },
+  "variable": {
+    "my-construct_PAT_8890AE2B": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
+    },
+    "my-construct_github_config_url_D9E0826F": {
+      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
+      "nullable": false
+    },
+    "my-construct_location_F378F07D": {
+      "default": "westeurope",
+      "description": "Location where to provision resources to",
+      "nullable": false,
+      "sensitive": false,
+      "type": "string"
+    }
+  }
+}"
+`;

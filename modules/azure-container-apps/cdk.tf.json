@@ -1,0 +1,635 @@
+{
+  "//": {
+    "metadata": {
+      "backend": "local",
+      "stackName": "azure-container-apps",
+      "version": "0.20.0"
+    },
+    "outputs": {
+    }
+  },
+  "data": {
+    "azapi_resource_action": {
+      "aca_storageAccessKeys_4F266A39": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/storageAccessKeys",
+            "uniqueId": "aca_storageAccessKeys_4F266A39"
+          }
+        },
+        "action": "listKeys",
+        "depends_on": [
+          "azapi_resource.aca_storageAccount_C1F07B26"
+        ],
+        "resource_id": "${azapi_resource.aca_storageAccount_C1F07B26.id}",
+        "response_export_values": {
+          "0": "*"
+        },
+        "type": "Microsoft.Storage/storageAccounts@2023-01-01"
+      }
+    },
+    "azurerm_subscription": {
+      "aca_sub_C75A43F0": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/sub",
+            "uniqueId": "aca_sub_C75A43F0"
+          }
+        }
+      }
+    }
+  },
+  "resource": {
+    "azapi_resource": {
+      "aca_acaenv_BB928F0D": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/acaenv",
+            "uniqueId": "aca_acaenv_BB928F0D"
+          }
+        },
+        "body": {
+          "properties": {
+            "appLogsConfiguration": {
+              "destination": "log-analytics",
+              "logAnalyticsConfiguration": {
+                "customerId": "${azurerm_log_analytics_workspace.aca_log_B150D83C.workspace_id}",
+                "sharedKey": "${azurerm_log_analytics_workspace.aca_log_B150D83C.primary_shared_key}"
+              }
+            },
+            "infrastructureResourceGroup": "managed-aca-rg",
+            "workloadProfiles": [
+              {
+                "name": "Consumption",
+                "workloadProfileType": "Consumption"
+              }
+            ]
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "gha-runner-environment",
+        "parent_id": "${azurerm_resource_group.aca_rg_AD6EB8ED.id}",
+        "type": "Microsoft.App/managedEnvironments@2024-03-01"
+      },
+      "aca_autoscalerCache_3C1251ED": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/autoscalerCache",
+            "uniqueId": "aca_autoscalerCache_3C1251ED"
+          }
+        },
+        "body": {
+          "properties": {
+            "sourceRepository": "ghcr.io/hi-fi/gha-runners-on-managed-env",
+            "targetRepository": "autoscaler"
+          }
+        },
+        "name": "autoscaler-cache",
+        "parent_id": "${azurerm_container_registry.aca_acr_DEECF884.id}",
+        "type": "Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview"
+      },
+      "aca_externalsShare_D334CAD4": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/externalsShare",
+            "uniqueId": "aca_externalsShare_D334CAD4"
+          }
+        },
+        "body": {
+          "properties": {
+            "enabledProtocols": "SMB"
+          }
+        },
+        "name": "ghaexternalsshare",
+        "parent_id": "${azapi_resource.aca_storageAccount_C1F07B26.id}/fileServices/default",
+        "type": "Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01"
+      },
+      "aca_ghaRunnerJob_816ABB0D": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/ghaRunnerJob",
+            "uniqueId": "aca_ghaRunnerJob_816ABB0D"
+          }
+        },
+        "body": {
+          "properties": {
+            "configuration": {
+              "manualTriggerConfig": {
+                "parallelism": 1,
+                "replicaCompletionCount": 1
+              },
+              "registries": [
+                {
+                  "identity": "${azurerm_user_assigned_identity.aca_identity_9571D28D.id}",
+                  "server": "${azurerm_container_registry.aca_acr_DEECF884.login_server}"
+                }
+              ],
+              "replicaTimeout": 1200,
+              "triggerType": "Manual"
+            },
+            "environmentId": "${azapi_resource.aca_acaenv_BB928F0D.id}",
+            "template": {
+              "containers": [
+                {
+                  "command": [
+                    "/bin/sh",
+                    "-c",
+                    "export EXECID=$(cat /proc/sys/kernel/random/uuid) && mkdir -p /tmp/_work/$EXECID && ln -s /tmp/_work/$EXECID _work && /home/runner/run.sh ; rm -r /tmp/_work/$EXECID"
+                  ],
+                  "env": [
+                    {
+                      "name": "APPSETTING_WEBSITE_SITE_NAME",
+                      "value": "identity-workaround"
+                    },
+                    {
+                      "name": "AZURE_CLIENT_ID",
+                      "value": "${azurerm_user_assigned_identity.aca_identity_9571D28D.client_id}"
+                    },
+                    {
+                      "name": "RG_NAME",
+                      "value": "${azurerm_resource_group.aca_rg_AD6EB8ED.name}"
+                    },
+                    {
+                      "name": "LOG_ID",
+                      "value": "${azurerm_log_analytics_workspace.aca_log_B150D83C.workspace_id}"
+                    },
+                    {
+                      "name": "STORAGE_NAME",
+                      "value": "${azurerm_container_app_environment_storage.aca_acaenvstorage_23C615A5.name}"
+                    },
+                    {
+                      "name": "EXTERNAL_STORAGE_NAME",
+                      "value": "${azurerm_container_app_environment_storage.aca_acaexternalstorage_B8141EC0.name}"
+                    },
+                    {
+                      "name": "SUBSCRIPTION_ID",
+                      "value": "${data.azurerm_subscription.aca_sub_C75A43F0.subscription_id}"
+                    },
+                    {
+                      "name": "ACA_ENVIRONMENT_ID",
+                      "value": "${azapi_resource.aca_acaenv_BB928F0D.id}"
+                    }
+                  ],
+                  "image": "${azurerm_container_registry.aca_acr_DEECF884.login_server}/root-actions-runner:latest",
+                  "name": "main",
+                  "resources": {
+                    "cpu": 1,
+                    "memory": "2Gi"
+                  },
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/tmp/_work",
+                      "volumeName": "work"
+                    },
+                    {
+                      "mountPath": "/tmp/externals",
+                      "volumeName": "externals"
+                    }
+                  ]
+                }
+              ],
+              "volumes": [
+                {
+                  "mountOptions": "mfsymlinks",
+                  "name": "work",
+                  "storageName": "${azurerm_container_app_environment_storage.aca_acaenvstorage_23C615A5.name}",
+                  "storageType": "AzureFile"
+                },
+                {
+                  "mountOptions": "mfsymlinks",
+                  "name": "externals",
+                  "storageName": "${azurerm_container_app_environment_storage.aca_acaexternalstorage_B8141EC0.name}",
+                  "storageType": "AzureFile"
+                }
+              ]
+            }
+          }
+        },
+        "depends_on": [
+          "azapi_resource.aca_runnerCache_2C48ECD2"
+        ],
+        "identity": [
+          {
+            "identity_ids": [
+              "${azurerm_user_assigned_identity.aca_identity_9571D28D.id}"
+            ],
+            "type": "UserAssigned"
+          }
+        ],
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "gha-runner-job-01",
+        "parent_id": "${azurerm_resource_group.aca_rg_AD6EB8ED.id}",
+        "type": "Microsoft.App/jobs@2024-02-02-preview"
+      },
+      "aca_runnerCache_2C48ECD2": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/runnerCache",
+            "uniqueId": "aca_runnerCache_2C48ECD2"
+          }
+        },
+        "body": {
+          "properties": {
+            "sourceRepository": "ghcr.io/hi-fi/root-actions-runner",
+            "targetRepository": "root-actions-runner"
+          }
+        },
+        "name": "root-runner-cache",
+        "parent_id": "${azurerm_container_registry.aca_acr_DEECF884.id}",
+        "type": "Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview"
+      },
+      "aca_storageAccount_C1F07B26": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/storageAccount",
+            "uniqueId": "aca_storageAccount_C1F07B26"
+          }
+        },
+        "body": {
+          "kind": "StorageV2",
+          "properties": {
+            "largeFileSharesState": "Enabled"
+          },
+          "sku": {
+            "name": "Standard_LRS"
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "ghastorageaccount${random_string.aca_randomSuffix_B2CE1226.result}",
+        "parent_id": "${azurerm_resource_group.aca_rg_AD6EB8ED.id}",
+        "response_export_values": {
+        },
+        "type": "Microsoft.Storage/storageAccounts@2023-01-01"
+      },
+      "aca_storageShare_5702AE2C": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/storageShare",
+            "uniqueId": "aca_storageShare_5702AE2C"
+          }
+        },
+        "body": {
+          "properties": {
+            "enabledProtocols": "SMB"
+          }
+        },
+        "name": "ghaexampleshare",
+        "parent_id": "${azapi_resource.aca_storageAccount_C1F07B26.id}/fileServices/default",
+        "type": "Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01"
+      }
+    },
+    "azurerm_container_app": {
+      "aca_autoscalerApp_63FADD45": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/autoscalerApp",
+            "uniqueId": "aca_autoscalerApp_63FADD45"
+          }
+        },
+        "container_app_environment_id": "${azapi_resource.aca_acaenv_BB928F0D.id}",
+        "depends_on": [
+          "azapi_resource.aca_autoscalerCache_3C1251ED"
+        ],
+        "identity": {
+          "identity_ids": [
+            "${azurerm_user_assigned_identity.aca_identity_9571D28D.id}"
+          ],
+          "type": "SystemAssigned, UserAssigned"
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags",
+            "workload_profile_name"
+          ]
+        },
+        "name": "autoscaler-app-01",
+        "registry": [
+          {
+            "identity": "${azurerm_user_assigned_identity.aca_identity_9571D28D.id}",
+            "server": "${azurerm_container_registry.aca_acr_DEECF884.login_server}"
+          }
+        ],
+        "resource_group_name": "${azurerm_resource_group.aca_rg_AD6EB8ED.name}",
+        "revision_mode": "Single",
+        "secret": [
+          {
+            "name": "pat",
+            "value": "${var.aca_PAT_B54A3B25}"
+          }
+        ],
+        "template": {
+          "container": [
+            {
+              "cpu": 0.25,
+              "env": [
+                {
+                  "name": "PAT",
+                  "secret_name": "pat"
+                },
+                {
+                  "name": "GITHUB_CONFIG_URL",
+                  "value": "${var.aca_github_config_url_7230B339}"
+                },
+                {
+                  "name": "AZURE_TENANT_ID",
+                  "value": "${data.azurerm_subscription.aca_sub_C75A43F0.tenant_id}"
+                },
+                {
+                  "name": "SUBSCRIPTION_ID",
+                  "value": "${data.azurerm_subscription.aca_sub_C75A43F0.subscription_id}"
+                },
+                {
+                  "name": "RESOURCE_GROUP_NAME",
+                  "value": "${azurerm_resource_group.aca_rg_AD6EB8ED.name}"
+                },
+                {
+                  "name": "JOB_NAME",
+                  "value": "${azapi_resource.aca_ghaRunnerJob_816ABB0D.name}"
+                },
+                {
+                  "name": "SCALE_SET_NAME",
+                  "value": "aca-runner-set"
+                }
+              ],
+              "image": "${azurerm_container_registry.aca_acr_DEECF884.login_server}/autoscaler:test",
+              "memory": "0.5Gi",
+              "name": "autoscaler"
+            }
+          ]
+        }
+      }
+    },
+    "azurerm_container_app_environment_storage": {
+      "aca_acaenvstorage_23C615A5": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/acaenvstorage",
+            "uniqueId": "aca_acaenvstorage_23C615A5"
+          }
+        },
+        "access_key": "${element(element(data.azapi_resource_action.aca_storageAccessKeys_4F266A39.output[\"0\"], 0), 0).value}",
+        "access_mode": "ReadWrite",
+        "account_name": "${azapi_resource.aca_storageAccount_C1F07B26.name}",
+        "container_app_environment_id": "${azapi_resource.aca_acaenv_BB928F0D.id}",
+        "depends_on": [
+          "azapi_resource.aca_storageShare_5702AE2C"
+        ],
+        "name": "gharunnerjobstorage",
+        "share_name": "${azapi_resource.aca_storageShare_5702AE2C.name}"
+      },
+      "aca_acaexternalstorage_B8141EC0": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/acaexternalstorage",
+            "uniqueId": "aca_acaexternalstorage_B8141EC0"
+          }
+        },
+        "access_key": "${element(element(data.azapi_resource_action.aca_storageAccessKeys_4F266A39.output[\"0\"], 0), 0).value}",
+        "access_mode": "ReadWrite",
+        "account_name": "${azapi_resource.aca_storageAccount_C1F07B26.name}",
+        "container_app_environment_id": "${azapi_resource.aca_acaenv_BB928F0D.id}",
+        "depends_on": [
+          "azapi_resource.aca_externalsShare_D334CAD4"
+        ],
+        "name": "gharunnerexternalstorage",
+        "share_name": "${azapi_resource.aca_externalsShare_D334CAD4.name}"
+      }
+    },
+    "azurerm_container_registry": {
+      "aca_acr_DEECF884": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/acr",
+            "uniqueId": "aca_acr_DEECF884"
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "runneracr${random_string.aca_randomSuffix_B2CE1226.result}",
+        "resource_group_name": "${azurerm_resource_group.aca_rg_AD6EB8ED.name}",
+        "sku": "Basic"
+      }
+    },
+    "azurerm_log_analytics_workspace": {
+      "aca_log_B150D83C": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/log",
+            "uniqueId": "aca_log_B150D83C"
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "gha-example-logs",
+        "resource_group_name": "${azurerm_resource_group.aca_rg_AD6EB8ED.name}"
+      }
+    },
+    "azurerm_resource_group": {
+      "aca_rg_AD6EB8ED": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/rg",
+            "uniqueId": "aca_rg_AD6EB8ED"
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "gha-runner-rg"
+      }
+    },
+    "azurerm_role_assignment": {
+      "aca_actionContainerStartRoleAssignment_941E620A": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/actionContainerStartRoleAssignment",
+            "uniqueId": "aca_actionContainerStartRoleAssignment_941E620A"
+          }
+        },
+        "principal_id": "${azurerm_user_assigned_identity.aca_identity_9571D28D.principal_id}",
+        "role_definition_id": "${azurerm_role_definition.aca_jobCreationRole_9EFE12E7.role_definition_resource_id}",
+        "scope": "${azurerm_resource_group.aca_rg_AD6EB8ED.id}"
+      },
+      "aca_imagePushRoleAssignment_8F2241FD": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/imagePushRoleAssignment",
+            "uniqueId": "aca_imagePushRoleAssignment_8F2241FD"
+          }
+        },
+        "principal_id": "${azurerm_user_assigned_identity.aca_identity_9571D28D.principal_id}",
+        "role_definition_name": "AcrPush",
+        "scope": "${azurerm_container_registry.aca_acr_DEECF884.id}"
+      },
+      "aca_jobLogReadAssignment_E0C92A22": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/jobLogReadAssignment",
+            "uniqueId": "aca_jobLogReadAssignment_E0C92A22"
+          }
+        },
+        "principal_id": "${azurerm_user_assigned_identity.aca_identity_9571D28D.principal_id}",
+        "role_definition_name": "Log Analytics Reader",
+        "scope": "${azurerm_log_analytics_workspace.aca_log_B150D83C.id}"
+      },
+      "aca_roleAssignment_A6BA6095": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/roleAssignment",
+            "uniqueId": "aca_roleAssignment_A6BA6095"
+          }
+        },
+        "principal_id": "${azurerm_user_assigned_identity.aca_identity_9571D28D.principal_id}",
+        "role_definition_name": "AcrPull",
+        "scope": "${azurerm_container_registry.aca_acr_DEECF884.id}"
+      },
+      "aca_scaleJobRoleAssignment_5738140A": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/scaleJobRoleAssignment",
+            "uniqueId": "aca_scaleJobRoleAssignment_5738140A"
+          }
+        },
+        "principal_id": "${azurerm_container_app.aca_autoscalerApp_63FADD45.identity[0].principal_id}",
+        "role_definition_id": "${azurerm_role_definition.aca_jobRole_21145D6F.role_definition_resource_id}",
+        "scope": "${azapi_resource.aca_ghaRunnerJob_816ABB0D.id}"
+      }
+    },
+    "azurerm_role_definition": {
+      "aca_jobCreationRole_9EFE12E7": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/jobCreationRole",
+            "uniqueId": "aca_jobCreationRole_9EFE12E7"
+          }
+        },
+        "name": "gha-example-revision-create-role-${random_string.aca_randomSuffix_B2CE1226.result}",
+        "permissions": [
+          {
+            "actions": [
+              "microsoft.app/jobs/start/action",
+              "microsoft.app/jobs/stop/action",
+              "microsoft.app/jobs/read",
+              "microsoft.app/jobs/write",
+              "microsoft.app/jobs/executions/read",
+              "microsoft.app/managedEnvironments/join/action",
+              "microsoft.app/jobs/delete"
+            ]
+          }
+        ],
+        "scope": "${data.azurerm_subscription.aca_sub_C75A43F0.id}"
+      },
+      "aca_jobRole_21145D6F": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/jobRole",
+            "uniqueId": "aca_jobRole_21145D6F"
+          }
+        },
+        "name": "gha-example-revision-start-role-${random_string.aca_randomSuffix_B2CE1226.result}",
+        "permissions": [
+          {
+            "actions": [
+              "microsoft.app/jobs/start/action",
+              "microsoft.app/jobs/stop/action",
+              "microsoft.app/jobs/read",
+              "microsoft.app/jobs/executions/read"
+            ]
+          }
+        ],
+        "scope": "${data.azurerm_subscription.aca_sub_C75A43F0.id}"
+      }
+    },
+    "azurerm_user_assigned_identity": {
+      "aca_identity_9571D28D": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/identity",
+            "uniqueId": "aca_identity_9571D28D"
+          }
+        },
+        "lifecycle": {
+          "ignore_changes": [
+            "tags"
+          ]
+        },
+        "location": "${var.aca_location_486B7D73}",
+        "name": "aca-acr-access",
+        "resource_group_name": "${azurerm_resource_group.aca_rg_AD6EB8ED.name}"
+      }
+    },
+    "random_string": {
+      "aca_randomSuffix_B2CE1226": {
+        "//": {
+          "metadata": {
+            "path": "azure-container-apps/aca/randomSuffix",
+            "uniqueId": "aca_randomSuffix_B2CE1226"
+          }
+        },
+        "length": 6,
+        "special": false,
+        "upper": false
+      }
+    }
+  },
+  "terraform": {
+    "required_providers": {
+      "azapi": {
+        "source": "azure/azapi",
+        "version": "2.3.0"
+      },
+      "azurerm": {
+        "source": "azurerm",
+        "version": "4.27.0"
+      },
+      "random": {
+        "source": "hashicorp/random",
+        "version": "3.7.2"
+      }
+    }
+  },
+  "variable": {
+    "aca_PAT_B54A3B25": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
+    },
+    "aca_github_config_url_7230B339": {
+      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
+      "nullable": false
+    },
+    "aca_location_486B7D73": {
+      "default": "westeurope",
+      "description": "Location where to provision resources to",
+      "nullable": false,
+      "sensitive": false,
+      "type": "string"
+    }
+  }
+}
