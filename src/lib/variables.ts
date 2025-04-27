@@ -13,10 +13,14 @@ export function commonVariables(scope: Construct): Variables {
         sensitive: true
     })
 
+    pat.overrideLogicalId('PAT');
+
     const githubConfigUrl = new TerraformVariable(scope, 'github_config_url', {
         description: 'Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>',
         nullable: false,
     })
+
+    githubConfigUrl.overrideLogicalId('github_config_url');
 
     return {
         pat,

@@ -57,8 +57,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_PAT_4017AC3F"></a> [aws\_PAT\_4017AC3F](#input\_aws\_PAT\_4017AC3F) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
-| <a name="input_aws_github_config_url_BFDD14B2"></a> [aws\_github\_config\_url\_BFDD14B2](#input\_aws\_github\_config\_url\_BFDD14B2) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
+| <a name="input_PAT"></a> [PAT](#input\_PAT) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
+| <a name="input_github_config_url"></a> [github\_config\_url](#input\_github\_config\_url) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
 
 ## Outputs
 

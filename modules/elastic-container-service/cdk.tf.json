@@ -115,7 +115,7 @@
             "uniqueId": "aws_AutoscalerTaskDefinition_24A76F67"
           }
         },
-        "container_definitions": "${jsonencode([{\"name\" = \"autoscaler\", \"image\" = \"ghcr.io/hi-fi/gha-runners-on-managed-env:test\", \"essential\" = true, \"environment\" = [{\"name\" = \"PAT\", \"value\" = var.aws_PAT_4017AC3F}, {\"name\" = \"GITHUB_CONFIG_URL\", \"value\" = var.aws_github_config_url_BFDD14B2}, {\"name\" = \"TASK_DEFINITION_ARN\", \"value\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}, {\"name\" = \"ECS_CLUSTER\", \"value\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\"name\" = \"ECS_SUBNETS\", \"value\" = join(\",\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\"name\" = \"ECS_SECURITY_GROUPS\", \"value\" = join(\",\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\"name\" = \"SCALE_SET_NAME\", \"value\" = \"ecs-runner-set\"}], \"logConfiguration\" = {\"logDriver\" = \"awslogs\", \"options\" = {\"awslogs-group\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \"awslogs-region\" = data.aws_region.aws_Region_7477CA06.name, \"awslogs-stream-prefix\" = \"ecs\"}}}])}",
+        "container_definitions": "${jsonencode([{\"name\" = \"autoscaler\", \"image\" = \"ghcr.io/hi-fi/gha-runners-on-managed-env:test\", \"essential\" = true, \"environment\" = [{\"name\" = \"PAT\", \"value\" = var.PAT}, {\"name\" = \"GITHUB_CONFIG_URL\", \"value\" = var.github_config_url}, {\"name\" = \"TASK_DEFINITION_ARN\", \"value\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}, {\"name\" = \"ECS_CLUSTER\", \"value\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\"name\" = \"ECS_SUBNETS\", \"value\" = join(\",\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\"name\" = \"ECS_SECURITY_GROUPS\", \"value\" = join(\",\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\"name\" = \"SCALE_SET_NAME\", \"value\" = \"ecs-runner-set\"}], \"logConfiguration\" = {\"logDriver\" = \"awslogs\", \"options\" = {\"awslogs-group\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \"awslogs-region\" = data.aws_region.aws_Region_7477CA06.name, \"awslogs-stream-prefix\" = \"ecs\"}}}])}",
         "cpu": "256",
         "execution_role_arn": "${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}",
         "family": "Autoscaler",
@@ -301,12 +301,12 @@
     }
   },
   "variable": {
-    "aws_PAT_4017AC3F": {
+    "PAT": {
       "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
       "nullable": false,
       "sensitive": true
     },
-    "aws_github_config_url_BFDD14B2": {
+    "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
     }
