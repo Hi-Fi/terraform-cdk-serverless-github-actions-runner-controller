@@ -64,9 +64,9 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aca_PAT_B54A3B25"></a> [aca\_PAT\_B54A3B25](#input\_aca\_PAT\_B54A3B25) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
-| <a name="input_aca_github_config_url_7230B339"></a> [aca\_github\_config\_url\_7230B339](#input\_aca\_github\_config\_url\_7230B339) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
+| <a name="input_PAT"></a> [PAT](#input\_PAT) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
 | <a name="input_aca_location_486B7D73"></a> [aca\_location\_486B7D73](#input\_aca\_location\_486B7D73) | Location where to provision resources to | `string` | `"westeurope"` | no |
+| <a name="input_github_config_url"></a> [github\_config\_url](#input\_github\_config\_url) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
 
 ## Outputs
 

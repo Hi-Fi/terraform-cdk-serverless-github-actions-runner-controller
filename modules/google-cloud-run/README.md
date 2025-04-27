@@ -53,8 +53,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cr_PAT_DD795492"></a> [cr\_PAT\_DD795492](#input\_cr\_PAT\_DD795492) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
-| <a name="input_cr_github_config_url_9957B21B"></a> [cr\_github\_config\_url\_9957B21B](#input\_cr\_github\_config\_url\_9957B21B) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
+| <a name="input_PAT"></a> [PAT](#input\_PAT) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
+| <a name="input_github_config_url"></a> [github\_config\_url](#input\_github\_config\_url) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
 
 ## Outputs
 

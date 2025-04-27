@@ -66,11 +66,11 @@
                 "env": [
                   {
                     "name": "PAT",
-                    "value": "${var.cr_PAT_DD795492}"
+                    "value": "${var.PAT}"
                   },
                   {
                     "name": "GITHUB_CONFIG_URL",
-                    "value": "${var.cr_github_config_url_9957B21B}"
+                    "value": "${var.github_config_url}"
                   },
                   {
                     "name": "JOB_NAME",
@@ -342,12 +342,12 @@
     }
   },
   "variable": {
-    "cr_PAT_DD795492": {
+    "PAT": {
       "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
       "nullable": false,
       "sensitive": true
     },
-    "cr_github_config_url_9957B21B": {
+    "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
     }

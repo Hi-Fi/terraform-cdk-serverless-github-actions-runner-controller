@@ -329,7 +329,7 @@
         "secret": [
           {
             "name": "pat",
-            "value": "${var.aca_PAT_B54A3B25}"
+            "value": "${var.PAT}"
           }
         ],
         "template": {
@@ -343,7 +343,7 @@
                 },
                 {
                   "name": "GITHUB_CONFIG_URL",
-                  "value": "${var.aca_github_config_url_7230B339}"
+                  "value": "${var.github_config_url}"
                 },
                 {
                   "name": "AZURE_TENANT_ID",
@@ -615,14 +615,10 @@
     }
   },
   "variable": {
-    "aca_PAT_B54A3B25": {
+    "PAT": {
       "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
       "nullable": false,
       "sensitive": true
-    },
-    "aca_github_config_url_7230B339": {
-      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
-      "nullable": false
     },
     "aca_location_486B7D73": {
       "default": "westeurope",
@@ -630,6 +626,10 @@
       "nullable": false,
       "sensitive": false,
       "type": "string"
+    },
+    "github_config_url": {
+      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
+      "nullable": false
     }
   }
 }
