@@ -1,3 +1,4 @@
+import { GithubCredentials } from "projen/lib/github";
 import { NodePackageManager } from "projen/lib/javascript";
 import {
   HybridModule,
@@ -15,6 +16,9 @@ const project = new HybridModule({
   constructVersion: "10.4.2",
   name: "terraform-cdk-serverless-github-actions-runner-controller",
   projenrcTs: true,
+  projenCredentials: GithubCredentials.fromPersonalAccessToken({
+    secret: "GITHUB_TOKEN",
+  }),
   repositoryUrl:
     "https://github.com/juho.saarinen/terraform-cdk-serverless-github-actions-runner-controller.git",
   peerDeps: ["@cdktf/provider-azurerm", "@cdktf/provider-random"],
@@ -31,5 +35,10 @@ const project = new HybridModule({
   // packageName: undefined,        /* The "name" in package.json. */
   // terraformExamples: undefined,  /* If set a terraform examples folder will be created. */
 });
+
+project.github?.actions.set(
+  "hashicorp/setup-terraform",
+  "hashicorp/setup-terraform@v3",
+);
 
 project.synth();
