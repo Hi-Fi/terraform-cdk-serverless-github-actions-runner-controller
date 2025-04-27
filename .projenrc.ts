@@ -14,7 +14,7 @@ const project = new HybridModule({
   license: "MIT",
   jsiiVersion: "~5.8.0",
   constructVersion: "10.4.2",
-  name: "@hi-fi/terraform-cdk-serverless-github-actions-runner-controller",
+  name: "terraform-cdk-serverless-github-actions-runner-controller",
   projenrcTs: true,
   projenCredentials: GithubCredentials.fromPersonalAccessToken({
     secret: "GITHUB_TOKEN",
