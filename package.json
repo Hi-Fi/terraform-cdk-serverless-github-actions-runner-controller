@@ -1,5 +1,5 @@
 {
-  "name": "@hi-fi/terraform-cdk-serverless-github-actions-runner-controller",
+  "name": "terraform-cdk-serverless-github-actions-runner-controller",
   "repository": {
     "type": "git",
     "url": "https://github.com/Hi-Fi/terraform-cdk-serverless-github-actions-runner-controller.git"
@@ -81,6 +81,9 @@
   ],
   "main": "lib/index.js",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.0",
   "jest": {
     "coverageProvider": "v8",
