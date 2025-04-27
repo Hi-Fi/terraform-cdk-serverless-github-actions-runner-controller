@@ -1,0 +1,355 @@
+{
+  "//": {
+    "metadata": {
+      "backend": "local",
+      "stackName": "google-cloud-run",
+      "version": "0.20.0"
+    },
+    "outputs": {
+    }
+  },
+  "locals": {
+    "cr_autoscalerMember_AA00D082": "serviceAccount:${google_service_account.cr_autoscalerServiceAccount_37C5FFAD.email}",
+    "cr_bucketModification_B1ECB227": "CLOUDSDK_CORE_DISABLE_PROMPTS=1 gcloud alpha storage buckets create gs://gha-runner-job-externals --project=gha-runner-example --location=europe-north1 --uniform-bucket-level-access --enable-hierarchical-namespace",
+    "cr_ghaMember_2ADFD977": "serviceAccount:${google_service_account.cr_jobServiceAccount_4D2CB679.email}"
+  },
+  "resource": {
+    "google_artifact_registry_repository": {
+      "cr_registry_886F88F0": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/registry",
+            "uniqueId": "cr_registry_886F88F0"
+          }
+        },
+        "description": "Repository to host run and resulting images from GHA runs",
+        "format": "DOCKER",
+        "mode": "REMOTE_REPOSITORY",
+        "remote_repository_config": {
+          "docker_repository": {
+            "custom_repository": {
+              "uri": "https://ghcr.io"
+            }
+          }
+        },
+        "repository_id": "gha-runner-test"
+      }
+    },
+    "google_cloud_run_service": {
+      "cr_autoscalerService_A4FAA2B6": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/autoscalerService",
+            "uniqueId": "cr_autoscalerService_A4FAA2B6"
+          }
+        },
+        "location": "europe-north1",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/ingress": "internal"
+          }
+        },
+        "name": "gha-autoscaler",
+        "template": {
+          "metadata": {
+            "annotations": {
+              "autoscaling.knative.dev/maxScale": "1",
+              "autoscaling.knative.dev/minScale": "1",
+              "run.googleapis.com/cpu-throttling": "false",
+              "run.googleapis.com/startup-cpu-boost": "false"
+            }
+          },
+          "spec": {
+            "container_concurrency": 1,
+            "containers": [
+              {
+                "env": [
+                  {
+                    "name": "PAT",
+                    "value": "${var.cr_PAT_DD795492}"
+                  },
+                  {
+                    "name": "GITHUB_CONFIG_URL",
+                    "value": "${var.cr_github_config_url_9957B21B}"
+                  },
+                  {
+                    "name": "JOB_NAME",
+                    "value": "${google_cloud_run_v2_job.cr_ghaJob_3BDFC08A.name}"
+                  },
+                  {
+                    "name": "SCALE_SET_NAME",
+                    "value": "cr-runner-set"
+                  },
+                  {
+                    "name": "CLOUDSDK_RUN_REGION",
+                    "value": "europe-north1"
+                  },
+                  {
+                    "name": "GOOGLE_CLOUD_PROJECT",
+                    "value": "gha-runner-example"
+                  }
+                ],
+                "image": "${google_artifact_registry_repository.cr_registry_886F88F0.location}-docker.pkg.dev/gha-runner-example/${google_artifact_registry_repository.cr_registry_886F88F0.repository_id}/hi-fi/gha-runners-on-managed-env:test",
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "service_account_name": "${google_service_account.cr_autoscalerServiceAccount_37C5FFAD.email}"
+          }
+        }
+      }
+    },
+    "google_cloud_run_v2_job": {
+      "cr_ghaJob_3BDFC08A": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/ghaJob",
+            "uniqueId": "cr_ghaJob_3BDFC08A"
+          }
+        },
+        "deletion_protection": false,
+        "depends_on": [
+          "null_resource.cr_gcloud_3D7A726F"
+        ],
+        "location": "europe-north1",
+        "name": "gha-runner-job",
+        "template": {
+          "template": {
+            "containers": [
+              {
+                "command": [
+                  "/home/runner/ephemeral_runner.sh"
+                ],
+                "env": [
+                  {
+                    "name": "CLOUDSDK_RUN_REGION",
+                    "value": "europe-north1"
+                  },
+                  {
+                    "name": "GOOGLE_CLOUD_PROJECT",
+                    "value": "gha-runner-example"
+                  },
+                  {
+                    "name": "EXTERNAL_STORAGE_NAME",
+                    "value": "gha-runner-job-externals"
+                  },
+                  {
+                    "name": "TAR_OPTIONS",
+                    "value": "--touch --no-overwrite-dir --no-same-owner"
+                  }
+                ],
+                "image": "${google_artifact_registry_repository.cr_registry_886F88F0.location}-docker.pkg.dev/gha-runner-example/${google_artifact_registry_repository.cr_registry_886F88F0.repository_id}/hi-fi/actions-runner:cr",
+                "resources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "2Gi"
+                  }
+                },
+                "volume_mounts": [
+                  {
+                    "mount_path": "/home/runner/_work/externals",
+                    "name": "externals"
+                  }
+                ]
+              }
+            ],
+            "max_retries": 0,
+            "service_account": "${google_service_account.cr_jobServiceAccount_4D2CB679.email}",
+            "volumes": [
+              {
+                "gcs": {
+                  "bucket": "gha-runner-job-externals"
+                },
+                "name": "externals"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "google_project_iam_custom_role": {
+      "cr_autoscalerRole_8A950337": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/autoscalerRole",
+            "uniqueId": "cr_autoscalerRole_8A950337"
+          }
+        },
+        "permissions": [
+          "artifactregistry.dockerimages.get",
+          "artifactregistry.dockerimages.list",
+          "run.jobs.run",
+          "run.jobs.create",
+          "run.jobs.delete"
+        ],
+        "role_id": "ghaAutoscalerRole",
+        "title": "GHA Autoscaler Role"
+      },
+      "cr_runnerRole_07508BC4": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/runnerRole",
+            "uniqueId": "cr_runnerRole_07508BC4"
+          }
+        },
+        "permissions": [
+          "artifactregistry.dockerimages.get",
+          "artifactregistry.dockerimages.list",
+          "run.jobs.run",
+          "run.jobs.create",
+          "run.jobs.delete",
+          "run.jobs.list",
+          "run.executions.get"
+        ],
+        "role_id": "ghaRunnerRole",
+        "title": "GHA Runner Role"
+      }
+    },
+    "google_project_iam_member": {
+      "cr_autoscalerRoleBindingRunServiceAgent_83C78179": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/autoscalerRoleBindingRunServiceAgent",
+            "uniqueId": "cr_autoscalerRoleBindingRunServiceAgent_83C78179"
+          }
+        },
+        "member": "${local.cr_autoscalerMember_AA00D082}",
+        "project": "gha-runner-example",
+        "role": "roles/run.serviceAgent"
+      },
+      "cr_autoscalerRoleBindingRun_76E1E813": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/autoscalerRoleBindingRun",
+            "uniqueId": "cr_autoscalerRoleBindingRun_76E1E813"
+          }
+        },
+        "member": "${local.cr_autoscalerMember_AA00D082}",
+        "project": "gha-runner-example",
+        "role": "roles/run.developer"
+      },
+      "cr_autoscalerRoleBindingStorage_C1A676AA": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/autoscalerRoleBindingStorage",
+            "uniqueId": "cr_autoscalerRoleBindingStorage_C1A676AA"
+          }
+        },
+        "member": "${local.cr_autoscalerMember_AA00D082}",
+        "project": "gha-runner-example",
+        "role": "roles/storage.admin"
+      },
+      "cr_runnerRoleBindingRunServiceAgent_88652FB8": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/runnerRoleBindingRunServiceAgent",
+            "uniqueId": "cr_runnerRoleBindingRunServiceAgent_88652FB8"
+          }
+        },
+        "member": "${local.cr_ghaMember_2ADFD977}",
+        "project": "gha-runner-example",
+        "role": "roles/run.serviceAgent"
+      },
+      "cr_runnerRoleBindingRunViewer_328C548F": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/runnerRoleBindingRunViewer",
+            "uniqueId": "cr_runnerRoleBindingRunViewer_328C548F"
+          }
+        },
+        "member": "${local.cr_ghaMember_2ADFD977}",
+        "project": "gha-runner-example",
+        "role": "roles/run.viewer"
+      },
+      "cr_runnerRoleBindingStorage_8D8C3B87": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/runnerRoleBindingStorage",
+            "uniqueId": "cr_runnerRoleBindingStorage_8D8C3B87"
+          }
+        },
+        "member": "${local.cr_ghaMember_2ADFD977}",
+        "project": "gha-runner-example",
+        "role": "roles/storage.admin"
+      },
+      "cr_runnerRoleBinding_E20193A5": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/runnerRoleBinding",
+            "uniqueId": "cr_runnerRoleBinding_E20193A5"
+          }
+        },
+        "member": "${local.cr_ghaMember_2ADFD977}",
+        "project": "gha-runner-example",
+        "role": "${google_project_iam_custom_role.cr_runnerRole_07508BC4.id}"
+      }
+    },
+    "google_service_account": {
+      "cr_autoscalerServiceAccount_37C5FFAD": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/autoscalerServiceAccount",
+            "uniqueId": "cr_autoscalerServiceAccount_37C5FFAD"
+          }
+        },
+        "account_id": "autoscaler-sa"
+      },
+      "cr_jobServiceAccount_4D2CB679": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/jobServiceAccount",
+            "uniqueId": "cr_jobServiceAccount_4D2CB679"
+          }
+        },
+        "account_id": "gha-runner-job-sa"
+      }
+    },
+    "null_resource": {
+      "cr_gcloud_3D7A726F": {
+        "//": {
+          "metadata": {
+            "path": "google-cloud-run/cr/gcloud",
+            "uniqueId": "cr_gcloud_3D7A726F"
+          }
+        },
+        "provisioner": [
+          {
+            "local-exec": {
+              "command": "${local.cr_bucketModification_B1ECB227}"
+            }
+          }
+        ],
+        "triggers": {
+          "fqn": "${local.cr_bucketModification_B1ECB227}"
+        }
+      }
+    }
+  },
+  "terraform": {
+    "required_providers": {
+      "google": {
+        "source": "google",
+        "version": "6.32.0"
+      },
+      "null": {
+        "source": "null",
+        "version": "3.2.4"
+      }
+    }
+  },
+  "variable": {
+    "cr_PAT_DD795492": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
+    },
+    "cr_github_config_url_9957B21B": {
+      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
+      "nullable": false
+    }
+  }
+}

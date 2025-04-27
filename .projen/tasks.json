@@ -286,13 +286,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@types/jest,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jest,jsii-diff,jsii-pacmak,prettier,projen,projen-cdktf-hybrid-construct,ts-jest,@cdktf/provider-azurerm,@cdktf/provider-random"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-sdk/client-ecs,@types/jest,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jest,jsii-diff,jsii-pacmak,prettier,projen,projen-cdktf-hybrid-construct,ts-jest,@cdktf/provider-aws,@cdktf/provider-azurerm,@cdktf/provider-google,@cdktf/provider-null,@cdktf/provider-random"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdktf-cli cdktf commit-and-tag-version constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen projen-cdktf-hybrid-construct ts-jest ts-node typescript @cdktf/provider-azurerm @cdktf/provider-random @cdktf/tf-module-stack"
+          "exec": "npm update @aws-sdk/client-ecs @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdktf-cli cdktf commit-and-tag-version constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen projen-cdktf-hybrid-construct ts-jest ts-node typescript @cdktf/provider-aws @cdktf/provider-azurerm @cdktf/provider-google @cdktf/provider-null @cdktf/provider-random @cdktf/tf-module-stack"
         },
         {
           "exec": "npx projen"

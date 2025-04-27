@@ -7,6 +7,6 @@
 
 ```hcl
 module "arc_on_aca" {
-  source = "juho.saarinen/terraform-cdk-serverless-github-actions-runner-controller.git//modules/azure-container-apps"
+  source = "Hi-Fi/serverless-github-actions-runner-controller/cdk//modules/azure-container-apps"
 }
 ```
