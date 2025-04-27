@@ -1,15 +1,203 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MyConstruct should synthesize 1`] = `
+exports[`Should synthesize snapshot for construct Aws 1`] = `
+"{
+  "data": {
+    "aws_caller_identity": {
+      "aws_Identity_FDC445BF": {
+      }
+    },
+    "aws_region": {
+      "aws_Region_7477CA06": {
+      }
+    },
+    "aws_security_groups": {
+      "aws_SecurityGroups_BAABB08D": {
+      }
+    },
+    "aws_subnets": {
+      "aws_Subnets_75E5377D": {
+      }
+    }
+  },
+  "provider": {
+    "aws": [
+      {
+      }
+    ]
+  },
+  "resource": {
+    "aws_cloudwatch_log_group": {
+      "aws_AutoscalerLogGroup_BFE58053": {
+        "name": "/ecs/Autoscaler"
+      },
+      "aws_RunnerLogGroup_711756A6": {
+        "name": "/ecs/GHA"
+      }
+    },
+    "aws_ecs_cluster": {
+      "aws_Cluster_BA268616": {
+        "name": "gha-runner-cluster"
+      }
+    },
+    "aws_ecs_service": {
+      "aws_AutoscalerService_C7C3AA3C": {
+        "cluster": "\${aws_ecs_cluster.aws_Cluster_BA268616.arn}",
+        "desired_count": 1,
+        "launch_type": "FARGATE",
+        "lifecycle": {
+          "ignore_changes": [
+            "desired_count"
+          ]
+        },
+        "name": "autoscaler-service",
+        "network_configuration": {
+          "assign_public_ip": true,
+          "security_groups": "\${data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids}",
+          "subnets": "\${data.aws_subnets.aws_Subnets_75E5377D.ids}"
+        },
+        "task_definition": "\${aws_ecs_task_definition.aws_AutoscalerTaskDefinition_24A76F67.arn_without_revision}"
+      }
+    },
+    "aws_ecs_task_definition": {
+      "aws_AutoscalerTaskDefinition_24A76F67": {
+        "container_definitions": "\${jsonencode([{\\"name\\" = \\"autoscaler\\", \\"image\\" = \\"ghcr.io/hi-fi/gha-runners-on-managed-env:test\\", \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"PAT\\", \\"value\\" = var.aws_PAT_4017AC3F}, {\\"name\\" = \\"GITHUB_CONFIG_URL\\", \\"value\\" = var.aws_github_config_url_BFDD14B2}, {\\"name\\" = \\"TASK_DEFINITION_ARN\\", \\"value\\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}, {\\"name\\" = \\"ECS_CLUSTER\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"SCALE_SET_NAME\\", \\"value\\" = \\"ecs-runner-set\\"}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
+        "cpu": "256",
+        "execution_role_arn": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}",
+        "family": "Autoscaler",
+        "memory": "512",
+        "network_mode": "awsvpc",
+        "requires_compatibilities": [
+          "FARGATE"
+        ],
+        "runtime_platform": {
+          "cpu_architecture": "X86_64",
+          "operating_system_family": "LINUX"
+        },
+        "task_role_arn": "\${aws_iam_role.aws_AutoscalerRole_CEB26423.arn}"
+      },
+      "aws_RunnerTaskDefinition_9C7563BE": {
+        "container_definitions": "\${jsonencode([{\\"name\\" = \\"runner\\", \\"image\\" = \\"ghcr.io/hi-fi/actions-runner:ecs\\", \\"command\\" = [\\"/bin/sh\\", \\"-c\\", \\"export EXECID=$(cat /proc/sys/kernel/random/uuid) && sudo mkdir -p /tmp/_work/$EXECID && sudo chown runner:runner /tmp/_work/$EXECID && ln -s /tmp/_work/$EXECID _work && sudo chown runner:runner /tmp/externals && /home/runner/run.sh ; sudo rm -r /tmp/_work/$EXECID\\"], \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"EFS_ID\\", \\"value\\" = aws_efs_file_system.aws_efs_B3BBB350.id}, {\\"name\\" = \\"EXTERNALS_EFS_ID\\", \\"value\\" = aws_efs_file_system.aws_externalsEfs_C15353C9.id}, {\\"name\\" = \\"ECS_CLUSTER_NAME\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.name}, {\\"name\\" = \\"ACTIONS_RUNNER_POD_NAME\\", \\"value\\" = \\"gha-pod\\"}, {\\"name\\" = \\"ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER\\", \\"value\\" = \\"false\\"}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"ECS_TASK_ROLE\\", \\"value\\" = aws_iam_role.aws_RunnerRole_75263C23.arn}, {\\"name\\" = \\"ECS_EXECUTION_ROLE\\", \\"value\\" = aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}], \\"mountPoints\\" = [{\\"sourceVolume\\" = \\"work\\", \\"containerPath\\" = \\"/tmp/_work\\"}, {\\"sourceVolume\\" = \\"externals\\", \\"containerPath\\" = \\"/tmp/externals\\"}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_RunnerLogGroup_711756A6.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
+        "cpu": "1024",
+        "execution_role_arn": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}",
+        "family": "GHA",
+        "memory": "2048",
+        "network_mode": "awsvpc",
+        "requires_compatibilities": [
+          "FARGATE"
+        ],
+        "runtime_platform": {
+          "cpu_architecture": "X86_64",
+          "operating_system_family": "LINUX"
+        },
+        "task_role_arn": "\${aws_iam_role.aws_RunnerRole_75263C23.arn}",
+        "volume": [
+          {
+            "efs_volume_configuration": {
+              "file_system_id": "\${aws_efs_file_system.aws_efs_B3BBB350.id}"
+            },
+            "name": "work"
+          },
+          {
+            "efs_volume_configuration": {
+              "file_system_id": "\${aws_efs_file_system.aws_externalsEfs_C15353C9.id}"
+            },
+            "name": "externals"
+          }
+        ]
+      }
+    },
+    "aws_efs_file_system": {
+      "aws_efs_B3BBB350": {
+        "tags": {
+          "Name": "work"
+        },
+        "throughput_mode": "elastic"
+      },
+      "aws_externalsEfs_C15353C9": {
+        "tags": {
+          "Name": "externals"
+        },
+        "throughput_mode": "elastic"
+      }
+    },
+    "aws_efs_mount_target": {
+      "aws_EfsMountTarget_B2BDD3E5": {
+        "file_system_id": "\${aws_efs_file_system.aws_efs_B3BBB350.id}",
+        "for_each": "\${toset(data.aws_subnets.aws_Subnets_75E5377D.ids)}",
+        "subnet_id": "\${each.value}"
+      },
+      "aws_ExternalsEfsMountTarget_2D9AE418": {
+        "file_system_id": "\${aws_efs_file_system.aws_externalsEfs_C15353C9.id}",
+        "for_each": "\${toset(data.aws_subnets.aws_Subnets_75E5377D.ids)}",
+        "subnet_id": "\${each.value}"
+      }
+    },
+    "aws_iam_policy": {
+      "aws_AutoscalerPolicy_FF16A997": {
+        "policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Sid\\" = \\"StartandMonitorTask\\", \\"Effect\\" = \\"Allow\\", \\"Action\\" = [\\"ecs:RunTask\\", \\"ecs:DescribeTasks\\", \\"logs:GetLogEvents\\", \\"iam:PassRole\\"], \\"Resource\\" = [\\"\${aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn_without_revision}:*\\", aws_iam_role.aws_TaskExecutionRole_FAB64402.arn, aws_iam_role.aws_RunnerRole_75263C23.arn, \\"arn:aws:ecs:\${data.aws_region.aws_Region_7477CA06.name}:\${data.aws_caller_identity.aws_Identity_FDC445BF.account_id}:task/\${aws_ecs_cluster.aws_Cluster_BA268616.name}/*\\", \\"\${aws_cloudwatch_log_group.aws_RunnerLogGroup_711756A6.arn}:log-stream:*\\"]}, {\\"Sid\\" = \\"GetVpcInfo\\", \\"Effect\\" = \\"Allow\\", \\"Action\\" = [\\"ec2:DescribeSubnets\\", \\"ec2:DescribeSecurityGroups\\"], \\"Resource\\" = \\"*\\"}]})}"
+      },
+      "aws_RunnerPolicy_7B21DB81": {
+        "policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Sid\\" = \\"StartandMonitorTask\\", \\"Effect\\" = \\"Allow\\", \\"Action\\" = [\\"ecs:RunTask\\", \\"ecs:TagResource\\", \\"ecs:ListTaskDefinitions\\", \\"ecs:ListTasks\\", \\"ecs:StopTask\\", \\"ecs:RegisterTaskDefinition\\", \\"ecs:DescribeTaskDefinition\\", \\"ecs:DeregisterTaskDefinition\\", \\"ecs:DeleteTaskDefinitions\\", \\"ecs:ExecuteCommand\\", \\"ecs:DescribeTasks\\", \\"logs:GetLogEvents\\", \\"iam:PassRole\\", \\"logs:StartLiveTail\\", \\"logs:CreateLogStream\\"], \\"Resource\\" = [\\"arn:aws:ecs:\${data.aws_region.aws_Region_7477CA06.name}:\${data.aws_caller_identity.aws_Identity_FDC445BF.account_id}:task-definition/gha-pod-workflow:*\\", aws_ecs_cluster.aws_Cluster_BA268616.arn, aws_iam_role.aws_TaskExecutionRole_FAB64402.arn, aws_iam_role.aws_RunnerRole_75263C23.arn, \\"arn:aws:ecs:\${data.aws_region.aws_Region_7477CA06.name}:\${data.aws_caller_identity.aws_Identity_FDC445BF.account_id}:task/\${aws_ecs_cluster.aws_Cluster_BA268616.name}/*\\", \\"*\\"]}, {\\"Sid\\" = \\"GetVpcInfo\\", \\"Effect\\" = \\"Allow\\", \\"Action\\" = [\\"ec2:DescribeSubnets\\", \\"ec2:DescribeSecurityGroups\\"], \\"Resource\\" = \\"*\\"}, {\\"Sid\\" = \\"ExecCommands\\", \\"Effect\\" = \\"Allow\\", \\"Action\\" = [\\"ssmmessages:CreateControlChannel\\", \\"ssmmessages:CreateDataChannel\\", \\"ssmmessages:OpenControlChannel\\", \\"ssmmessages:OpenDataChannel\\"], \\"Resource\\" = \\"*\\"}]})}"
+      }
+    },
+    "aws_iam_role": {
+      "aws_AutoscalerRole_CEB26423": {
+        "assume_role_policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Effect\\" = \\"Allow\\", \\"Principal\\" = {\\"Service\\" = \\"ecs-tasks.amazonaws.com\\"}, \\"Action\\" = \\"sts:AssumeRole\\"}]})}"
+      },
+      "aws_RunnerRole_75263C23": {
+        "assume_role_policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Effect\\" = \\"Allow\\", \\"Principal\\" = {\\"Service\\" = \\"ecs-tasks.amazonaws.com\\"}, \\"Action\\" = \\"sts:AssumeRole\\"}]})}"
+      },
+      "aws_TaskExecutionRole_FAB64402": {
+        "assume_role_policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Effect\\" = \\"Allow\\", \\"Principal\\" = {\\"Service\\" = \\"ecs-tasks.amazonaws.com\\"}, \\"Action\\" = \\"sts:AssumeRole\\"}]})}",
+        "managed_policy_arns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+        ]
+      }
+    },
+    "aws_iam_role_policy_attachment": {
+      "aws_AutoscalerPolicyAttachment_5402A0C0": {
+        "policy_arn": "\${aws_iam_policy.aws_AutoscalerPolicy_FF16A997.arn}",
+        "role": "\${aws_iam_role.aws_AutoscalerRole_CEB26423.name}"
+      },
+      "aws_RunnerPolicyAttachment_A293771C": {
+        "policy_arn": "\${aws_iam_policy.aws_RunnerPolicy_7B21DB81.arn}",
+        "role": "\${aws_iam_role.aws_RunnerRole_75263C23.name}"
+      }
+    }
+  },
+  "terraform": {
+    "required_providers": {
+      "aws": {
+        "source": "aws",
+        "version": "5.96.0"
+      }
+    }
+  },
+  "variable": {
+    "aws_PAT_4017AC3F": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
+    },
+    "aws_github_config_url_BFDD14B2": {
+      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
+      "nullable": false
+    }
+  }
+}"
+`;
+
+exports[`Should synthesize snapshot for construct Azure 1`] = `
 "{
   "data": {
     "azapi_resource_action": {
-      "my-construct_storageAccessKeys_0699D59D": {
+      "azure_storageAccessKeys_0EC3B2BC": {
         "action": "listKeys",
         "depends_on": [
-          "azapi_resource.my-construct_storageAccount_C2767EFC"
+          "azapi_resource.azure_storageAccount_7849B080"
         ],
-        "resource_id": "\${azapi_resource.my-construct_storageAccount_C2767EFC.id}",
+        "resource_id": "\${azapi_resource.azure_storageAccount_7849B080.id}",
         "response_export_values": {
           "0": "*"
         },
@@ -17,7 +205,7 @@ exports[`MyConstruct should synthesize 1`] = `
       }
     },
     "azurerm_subscription": {
-      "my-construct_sub_070A3ED3": {
+      "azure_sub_036A67C4": {
       }
     }
   },
@@ -41,14 +229,14 @@ exports[`MyConstruct should synthesize 1`] = `
   },
   "resource": {
     "azapi_resource": {
-      "my-construct_acaenv_7FE7BF6B": {
+      "azure_acaenv_918770EE": {
         "body": {
           "properties": {
             "appLogsConfiguration": {
               "destination": "log-analytics",
               "logAnalyticsConfiguration": {
-                "customerId": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.workspace_id}",
-                "sharedKey": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.primary_shared_key}"
+                "customerId": "\${azurerm_log_analytics_workspace.azure_log_E9126391.workspace_id}",
+                "sharedKey": "\${azurerm_log_analytics_workspace.azure_log_E9126391.primary_shared_key}"
               }
             },
             "infrastructureResourceGroup": "managed-aca-rg",
@@ -65,12 +253,12 @@ exports[`MyConstruct should synthesize 1`] = `
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
+        "location": "\${var.azure_location_D739E5B1}",
         "name": "gha-runner-environment",
-        "parent_id": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}",
+        "parent_id": "\${azurerm_resource_group.azure_rg_F8487AD9.id}",
         "type": "Microsoft.App/managedEnvironments@2024-03-01"
       },
-      "my-construct_autoscalerCache_CDB25478": {
+      "azure_autoscalerCache_B812ADD5": {
         "body": {
           "properties": {
             "sourceRepository": "ghcr.io/hi-fi/gha-runners-on-managed-env",
@@ -78,20 +266,20 @@ exports[`MyConstruct should synthesize 1`] = `
           }
         },
         "name": "autoscaler-cache",
-        "parent_id": "\${azurerm_container_registry.my-construct_acr_A9610537.id}",
+        "parent_id": "\${azurerm_container_registry.azure_acr_745DE243.id}",
         "type": "Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview"
       },
-      "my-construct_externalsShare_259133E9": {
+      "azure_externalsShare_884181D1": {
         "body": {
           "properties": {
             "enabledProtocols": "SMB"
           }
         },
         "name": "ghaexternalsshare",
-        "parent_id": "\${azapi_resource.my-construct_storageAccount_C2767EFC.id}/fileServices/default",
+        "parent_id": "\${azapi_resource.azure_storageAccount_7849B080.id}/fileServices/default",
         "type": "Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01"
       },
-      "my-construct_ghaRunnerJob_0E7EE2D9": {
+      "azure_ghaRunnerJob_55D30F13": {
         "body": {
           "properties": {
             "configuration": {
@@ -101,14 +289,14 @@ exports[`MyConstruct should synthesize 1`] = `
               },
               "registries": [
                 {
-                  "identity": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}",
-                  "server": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}"
+                  "identity": "\${azurerm_user_assigned_identity.azure_identity_80584304.id}",
+                  "server": "\${azurerm_container_registry.azure_acr_745DE243.login_server}"
                 }
               ],
               "replicaTimeout": 1200,
               "triggerType": "Manual"
             },
-            "environmentId": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+            "environmentId": "\${azapi_resource.azure_acaenv_918770EE.id}",
             "template": {
               "containers": [
                 {
@@ -124,34 +312,34 @@ exports[`MyConstruct should synthesize 1`] = `
                     },
                     {
                       "name": "AZURE_CLIENT_ID",
-                      "value": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.client_id}"
+                      "value": "\${azurerm_user_assigned_identity.azure_identity_80584304.client_id}"
                     },
                     {
                       "name": "RG_NAME",
-                      "value": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+                      "value": "\${azurerm_resource_group.azure_rg_F8487AD9.name}"
                     },
                     {
                       "name": "LOG_ID",
-                      "value": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.workspace_id}"
+                      "value": "\${azurerm_log_analytics_workspace.azure_log_E9126391.workspace_id}"
                     },
                     {
                       "name": "STORAGE_NAME",
-                      "value": "\${azurerm_container_app_environment_storage.my-construct_acaenvstorage_B28CA1DB.name}"
+                      "value": "\${azurerm_container_app_environment_storage.azure_acaenvstorage_4F70C244.name}"
                     },
                     {
                       "name": "EXTERNAL_STORAGE_NAME",
-                      "value": "\${azurerm_container_app_environment_storage.my-construct_acaexternalstorage_EE73C5CB.name}"
+                      "value": "\${azurerm_container_app_environment_storage.azure_acaexternalstorage_815E5F49.name}"
                     },
                     {
                       "name": "SUBSCRIPTION_ID",
-                      "value": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.subscription_id}"
+                      "value": "\${data.azurerm_subscription.azure_sub_036A67C4.subscription_id}"
                     },
                     {
                       "name": "ACA_ENVIRONMENT_ID",
-                      "value": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}"
+                      "value": "\${azapi_resource.azure_acaenv_918770EE.id}"
                     }
                   ],
-                  "image": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}/root-actions-runner:latest",
+                  "image": "\${azurerm_container_registry.azure_acr_745DE243.login_server}/root-actions-runner:latest",
                   "name": "main",
                   "resources": {
                     "cpu": 1,
@@ -173,13 +361,13 @@ exports[`MyConstruct should synthesize 1`] = `
                 {
                   "mountOptions": "mfsymlinks",
                   "name": "work",
-                  "storageName": "\${azurerm_container_app_environment_storage.my-construct_acaenvstorage_B28CA1DB.name}",
+                  "storageName": "\${azurerm_container_app_environment_storage.azure_acaenvstorage_4F70C244.name}",
                   "storageType": "AzureFile"
                 },
                 {
                   "mountOptions": "mfsymlinks",
                   "name": "externals",
-                  "storageName": "\${azurerm_container_app_environment_storage.my-construct_acaexternalstorage_EE73C5CB.name}",
+                  "storageName": "\${azurerm_container_app_environment_storage.azure_acaexternalstorage_815E5F49.name}",
                   "storageType": "AzureFile"
                 }
               ]
@@ -187,12 +375,12 @@ exports[`MyConstruct should synthesize 1`] = `
           }
         },
         "depends_on": [
-          "azapi_resource.my-construct_runnerCache_A488AA96"
+          "azapi_resource.azure_runnerCache_9A0FFB81"
         ],
         "identity": [
           {
             "identity_ids": [
-              "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}"
+              "\${azurerm_user_assigned_identity.azure_identity_80584304.id}"
             ],
             "type": "UserAssigned"
           }
@@ -202,12 +390,12 @@ exports[`MyConstruct should synthesize 1`] = `
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
+        "location": "\${var.azure_location_D739E5B1}",
         "name": "gha-runner-job-01",
-        "parent_id": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}",
+        "parent_id": "\${azurerm_resource_group.azure_rg_F8487AD9.id}",
         "type": "Microsoft.App/jobs@2024-02-02-preview"
       },
-      "my-construct_runnerCache_A488AA96": {
+      "azure_runnerCache_9A0FFB81": {
         "body": {
           "properties": {
             "sourceRepository": "ghcr.io/hi-fi/root-actions-runner",
@@ -215,10 +403,10 @@ exports[`MyConstruct should synthesize 1`] = `
           }
         },
         "name": "root-runner-cache",
-        "parent_id": "\${azurerm_container_registry.my-construct_acr_A9610537.id}",
+        "parent_id": "\${azurerm_container_registry.azure_acr_745DE243.id}",
         "type": "Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview"
       },
-      "my-construct_storageAccount_C2767EFC": {
+      "azure_storageAccount_7849B080": {
         "body": {
           "kind": "StorageV2",
           "properties": {
@@ -233,33 +421,33 @@ exports[`MyConstruct should synthesize 1`] = `
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
-        "name": "ghastorageaccount\${random_string.my-construct_randomSuffix_138F764D.result}",
-        "parent_id": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}",
+        "location": "\${var.azure_location_D739E5B1}",
+        "name": "ghastorageaccount\${random_string.azure_randomSuffix_2BEE0D8C.result}",
+        "parent_id": "\${azurerm_resource_group.azure_rg_F8487AD9.id}",
         "response_export_values": {
         },
         "type": "Microsoft.Storage/storageAccounts@2023-01-01"
       },
-      "my-construct_storageShare_FCD6F27E": {
+      "azure_storageShare_A74F40DD": {
         "body": {
           "properties": {
             "enabledProtocols": "SMB"
           }
         },
         "name": "ghaexampleshare",
-        "parent_id": "\${azapi_resource.my-construct_storageAccount_C2767EFC.id}/fileServices/default",
+        "parent_id": "\${azapi_resource.azure_storageAccount_7849B080.id}/fileServices/default",
         "type": "Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01"
       }
     },
     "azurerm_container_app": {
-      "my-construct_autoscalerApp_633D1A5D": {
-        "container_app_environment_id": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+      "azure_autoscalerApp_7BB97905": {
+        "container_app_environment_id": "\${azapi_resource.azure_acaenv_918770EE.id}",
         "depends_on": [
-          "azapi_resource.my-construct_autoscalerCache_CDB25478"
+          "azapi_resource.azure_autoscalerCache_B812ADD5"
         ],
         "identity": {
           "identity_ids": [
-            "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}"
+            "\${azurerm_user_assigned_identity.azure_identity_80584304.id}"
           ],
           "type": "SystemAssigned, UserAssigned"
         },
@@ -272,16 +460,16 @@ exports[`MyConstruct should synthesize 1`] = `
         "name": "autoscaler-app-01",
         "registry": [
           {
-            "identity": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.id}",
-            "server": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}"
+            "identity": "\${azurerm_user_assigned_identity.azure_identity_80584304.id}",
+            "server": "\${azurerm_container_registry.azure_acr_745DE243.login_server}"
           }
         ],
-        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}",
+        "resource_group_name": "\${azurerm_resource_group.azure_rg_F8487AD9.name}",
         "revision_mode": "Single",
         "secret": [
           {
             "name": "pat",
-            "value": "\${var.my-construct_PAT_8890AE2B}"
+            "value": "\${var.azure_PAT_F6062C2E}"
           }
         ],
         "template": {
@@ -295,30 +483,30 @@ exports[`MyConstruct should synthesize 1`] = `
                 },
                 {
                   "name": "GITHUB_CONFIG_URL",
-                  "value": "\${var.my-construct_github_config_url_D9E0826F}"
+                  "value": "\${var.azure_github_config_url_37A40227}"
                 },
                 {
                   "name": "AZURE_TENANT_ID",
-                  "value": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.tenant_id}"
+                  "value": "\${data.azurerm_subscription.azure_sub_036A67C4.tenant_id}"
                 },
                 {
                   "name": "SUBSCRIPTION_ID",
-                  "value": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.subscription_id}"
+                  "value": "\${data.azurerm_subscription.azure_sub_036A67C4.subscription_id}"
                 },
                 {
                   "name": "RESOURCE_GROUP_NAME",
-                  "value": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+                  "value": "\${azurerm_resource_group.azure_rg_F8487AD9.name}"
                 },
                 {
                   "name": "JOB_NAME",
-                  "value": "\${azapi_resource.my-construct_ghaRunnerJob_0E7EE2D9.name}"
+                  "value": "\${azapi_resource.azure_ghaRunnerJob_55D30F13.name}"
                 },
                 {
                   "name": "SCALE_SET_NAME",
                   "value": "aca-runner-set"
                 }
               ],
-              "image": "\${azurerm_container_registry.my-construct_acr_A9610537.login_server}/autoscaler:test",
+              "image": "\${azurerm_container_registry.azure_acr_745DE243.login_server}/autoscaler:test",
               "memory": "0.5Gi",
               "name": "autoscaler"
             }
@@ -327,95 +515,95 @@ exports[`MyConstruct should synthesize 1`] = `
       }
     },
     "azurerm_container_app_environment_storage": {
-      "my-construct_acaenvstorage_B28CA1DB": {
-        "access_key": "\${element(element(data.azapi_resource_action.my-construct_storageAccessKeys_0699D59D.output[\\"0\\"], 0), 0).value}",
+      "azure_acaenvstorage_4F70C244": {
+        "access_key": "\${element(element(data.azapi_resource_action.azure_storageAccessKeys_0EC3B2BC.output[\\"0\\"], 0), 0).value}",
         "access_mode": "ReadWrite",
-        "account_name": "\${azapi_resource.my-construct_storageAccount_C2767EFC.name}",
-        "container_app_environment_id": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+        "account_name": "\${azapi_resource.azure_storageAccount_7849B080.name}",
+        "container_app_environment_id": "\${azapi_resource.azure_acaenv_918770EE.id}",
         "depends_on": [
-          "azapi_resource.my-construct_storageShare_FCD6F27E"
+          "azapi_resource.azure_storageShare_A74F40DD"
         ],
         "name": "gharunnerjobstorage",
-        "share_name": "\${azapi_resource.my-construct_storageShare_FCD6F27E.name}"
+        "share_name": "\${azapi_resource.azure_storageShare_A74F40DD.name}"
       },
-      "my-construct_acaexternalstorage_EE73C5CB": {
-        "access_key": "\${element(element(data.azapi_resource_action.my-construct_storageAccessKeys_0699D59D.output[\\"0\\"], 0), 0).value}",
+      "azure_acaexternalstorage_815E5F49": {
+        "access_key": "\${element(element(data.azapi_resource_action.azure_storageAccessKeys_0EC3B2BC.output[\\"0\\"], 0), 0).value}",
         "access_mode": "ReadWrite",
-        "account_name": "\${azapi_resource.my-construct_storageAccount_C2767EFC.name}",
-        "container_app_environment_id": "\${azapi_resource.my-construct_acaenv_7FE7BF6B.id}",
+        "account_name": "\${azapi_resource.azure_storageAccount_7849B080.name}",
+        "container_app_environment_id": "\${azapi_resource.azure_acaenv_918770EE.id}",
         "depends_on": [
-          "azapi_resource.my-construct_externalsShare_259133E9"
+          "azapi_resource.azure_externalsShare_884181D1"
         ],
         "name": "gharunnerexternalstorage",
-        "share_name": "\${azapi_resource.my-construct_externalsShare_259133E9.name}"
+        "share_name": "\${azapi_resource.azure_externalsShare_884181D1.name}"
       }
     },
     "azurerm_container_registry": {
-      "my-construct_acr_A9610537": {
+      "azure_acr_745DE243": {
         "lifecycle": {
           "ignore_changes": [
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
-        "name": "runneracr\${random_string.my-construct_randomSuffix_138F764D.result}",
-        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}",
+        "location": "\${var.azure_location_D739E5B1}",
+        "name": "runneracr\${random_string.azure_randomSuffix_2BEE0D8C.result}",
+        "resource_group_name": "\${azurerm_resource_group.azure_rg_F8487AD9.name}",
         "sku": "Basic"
       }
     },
     "azurerm_log_analytics_workspace": {
-      "my-construct_log_5A24524B": {
+      "azure_log_E9126391": {
         "lifecycle": {
           "ignore_changes": [
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
+        "location": "\${var.azure_location_D739E5B1}",
         "name": "gha-example-logs",
-        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+        "resource_group_name": "\${azurerm_resource_group.azure_rg_F8487AD9.name}"
       }
     },
     "azurerm_resource_group": {
-      "my-construct_rg_7FCC6D0A": {
+      "azure_rg_F8487AD9": {
         "lifecycle": {
           "ignore_changes": [
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
+        "location": "\${var.azure_location_D739E5B1}",
         "name": "gha-runner-rg"
       }
     },
     "azurerm_role_assignment": {
-      "my-construct_actionContainerStartRoleAssignment_BAD7777D": {
-        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
-        "role_definition_id": "\${azurerm_role_definition.my-construct_jobCreationRole_53DFA4B3.role_definition_resource_id}",
-        "scope": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.id}"
+      "azure_actionContainerStartRoleAssignment_1120CBE9": {
+        "principal_id": "\${azurerm_user_assigned_identity.azure_identity_80584304.principal_id}",
+        "role_definition_id": "\${azurerm_role_definition.azure_jobCreationRole_0FBEE831.role_definition_resource_id}",
+        "scope": "\${azurerm_resource_group.azure_rg_F8487AD9.id}"
       },
-      "my-construct_imagePushRoleAssignment_40D49BA6": {
-        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+      "azure_imagePushRoleAssignment_C3B33CD2": {
+        "principal_id": "\${azurerm_user_assigned_identity.azure_identity_80584304.principal_id}",
         "role_definition_name": "AcrPush",
-        "scope": "\${azurerm_container_registry.my-construct_acr_A9610537.id}"
+        "scope": "\${azurerm_container_registry.azure_acr_745DE243.id}"
       },
-      "my-construct_jobLogReadAssignment_5CF294BF": {
-        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+      "azure_jobLogReadAssignment_EA283E84": {
+        "principal_id": "\${azurerm_user_assigned_identity.azure_identity_80584304.principal_id}",
         "role_definition_name": "Log Analytics Reader",
-        "scope": "\${azurerm_log_analytics_workspace.my-construct_log_5A24524B.id}"
+        "scope": "\${azurerm_log_analytics_workspace.azure_log_E9126391.id}"
       },
-      "my-construct_roleAssignment_98421EF4": {
-        "principal_id": "\${azurerm_user_assigned_identity.my-construct_identity_8FC2225A.principal_id}",
+      "azure_roleAssignment_E7748C09": {
+        "principal_id": "\${azurerm_user_assigned_identity.azure_identity_80584304.principal_id}",
         "role_definition_name": "AcrPull",
-        "scope": "\${azurerm_container_registry.my-construct_acr_A9610537.id}"
+        "scope": "\${azurerm_container_registry.azure_acr_745DE243.id}"
       },
-      "my-construct_scaleJobRoleAssignment_17ACDDF9": {
-        "principal_id": "\${azurerm_container_app.my-construct_autoscalerApp_633D1A5D.identity[0].principal_id}",
-        "role_definition_id": "\${azurerm_role_definition.my-construct_jobRole_8C0D24F7.role_definition_resource_id}",
-        "scope": "\${azapi_resource.my-construct_ghaRunnerJob_0E7EE2D9.id}"
+      "azure_scaleJobRoleAssignment_674FD66A": {
+        "principal_id": "\${azurerm_container_app.azure_autoscalerApp_7BB97905.identity[0].principal_id}",
+        "role_definition_id": "\${azurerm_role_definition.azure_jobRole_F1E17C6F.role_definition_resource_id}",
+        "scope": "\${azapi_resource.azure_ghaRunnerJob_55D30F13.id}"
       }
     },
     "azurerm_role_definition": {
-      "my-construct_jobCreationRole_53DFA4B3": {
-        "name": "gha-example-revision-create-role-\${random_string.my-construct_randomSuffix_138F764D.result}",
+      "azure_jobCreationRole_0FBEE831": {
+        "name": "gha-example-revision-create-role-\${random_string.azure_randomSuffix_2BEE0D8C.result}",
         "permissions": [
           {
             "actions": [
@@ -429,10 +617,10 @@ exports[`MyConstruct should synthesize 1`] = `
             ]
           }
         ],
-        "scope": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.id}"
+        "scope": "\${data.azurerm_subscription.azure_sub_036A67C4.id}"
       },
-      "my-construct_jobRole_8C0D24F7": {
-        "name": "gha-example-revision-start-role-\${random_string.my-construct_randomSuffix_138F764D.result}",
+      "azure_jobRole_F1E17C6F": {
+        "name": "gha-example-revision-start-role-\${random_string.azure_randomSuffix_2BEE0D8C.result}",
         "permissions": [
           {
             "actions": [
@@ -443,23 +631,23 @@ exports[`MyConstruct should synthesize 1`] = `
             ]
           }
         ],
-        "scope": "\${data.azurerm_subscription.my-construct_sub_070A3ED3.id}"
+        "scope": "\${data.azurerm_subscription.azure_sub_036A67C4.id}"
       }
     },
     "azurerm_user_assigned_identity": {
-      "my-construct_identity_8FC2225A": {
+      "azure_identity_80584304": {
         "lifecycle": {
           "ignore_changes": [
             "tags"
           ]
         },
-        "location": "\${var.my-construct_location_F378F07D}",
+        "location": "\${var.azure_location_D739E5B1}",
         "name": "aca-acr-access",
-        "resource_group_name": "\${azurerm_resource_group.my-construct_rg_7FCC6D0A.name}"
+        "resource_group_name": "\${azurerm_resource_group.azure_rg_F8487AD9.name}"
       }
     },
     "random_string": {
-      "my-construct_randomSuffix_138F764D": {
+      "azure_randomSuffix_2BEE0D8C": {
         "length": 6,
         "special": false,
         "upper": false
@@ -483,21 +671,292 @@ exports[`MyConstruct should synthesize 1`] = `
     }
   },
   "variable": {
-    "my-construct_PAT_8890AE2B": {
+    "azure_PAT_F6062C2E": {
       "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
       "nullable": false,
       "sensitive": true
     },
-    "my-construct_github_config_url_D9E0826F": {
+    "azure_github_config_url_37A40227": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
     },
-    "my-construct_location_F378F07D": {
+    "azure_location_D739E5B1": {
       "default": "westeurope",
       "description": "Location where to provision resources to",
       "nullable": false,
       "sensitive": false,
       "type": "string"
+    }
+  }
+}"
+`;
+
+exports[`Should synthesize snapshot for construct Google 1`] = `
+"{
+  "locals": {
+    "google_autoscalerMember_A1BCDDDA": "serviceAccount:\${google_service_account.google_autoscalerServiceAccount_7735011D.email}",
+    "google_bucketModification_5BC76FE7": "CLOUDSDK_CORE_DISABLE_PROMPTS=1 gcloud alpha storage buckets create gs://gha-runner-job-externals --project=gha-runner-example --location=europe-north1 --uniform-bucket-level-access --enable-hierarchical-namespace",
+    "google_ghaMember_D48EB3AB": "serviceAccount:\${google_service_account.google_jobServiceAccount_2E7B13C1.email}"
+  },
+  "provider": {
+    "google": [
+      {
+        "project": "gha-runner-example",
+        "region": "europe-north1"
+      }
+    ],
+    "null": [
+      {
+      }
+    ]
+  },
+  "resource": {
+    "google_artifact_registry_repository": {
+      "google_registry_9512CCE4": {
+        "description": "Repository to host run and resulting images from GHA runs",
+        "format": "DOCKER",
+        "mode": "REMOTE_REPOSITORY",
+        "remote_repository_config": {
+          "docker_repository": {
+            "custom_repository": {
+              "uri": "https://ghcr.io"
+            }
+          }
+        },
+        "repository_id": "gha-runner-test"
+      }
+    },
+    "google_cloud_run_service": {
+      "google_autoscalerService_B10CCE0E": {
+        "location": "europe-north1",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/ingress": "internal"
+          }
+        },
+        "name": "gha-autoscaler",
+        "template": {
+          "metadata": {
+            "annotations": {
+              "autoscaling.knative.dev/maxScale": "1",
+              "autoscaling.knative.dev/minScale": "1",
+              "run.googleapis.com/cpu-throttling": "false",
+              "run.googleapis.com/startup-cpu-boost": "false"
+            }
+          },
+          "spec": {
+            "container_concurrency": 1,
+            "containers": [
+              {
+                "env": [
+                  {
+                    "name": "PAT",
+                    "value": "\${var.google_PAT_D6AD04E8}"
+                  },
+                  {
+                    "name": "GITHUB_CONFIG_URL",
+                    "value": "\${var.google_github_config_url_C3483F2D}"
+                  },
+                  {
+                    "name": "JOB_NAME",
+                    "value": "\${google_cloud_run_v2_job.google_ghaJob_F8BA60A9.name}"
+                  },
+                  {
+                    "name": "SCALE_SET_NAME",
+                    "value": "cr-runner-set"
+                  },
+                  {
+                    "name": "CLOUDSDK_RUN_REGION",
+                    "value": "europe-north1"
+                  },
+                  {
+                    "name": "GOOGLE_CLOUD_PROJECT",
+                    "value": "gha-runner-example"
+                  }
+                ],
+                "image": "\${google_artifact_registry_repository.google_registry_9512CCE4.location}-docker.pkg.dev/gha-runner-example/\${google_artifact_registry_repository.google_registry_9512CCE4.repository_id}/hi-fi/gha-runners-on-managed-env:test",
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "service_account_name": "\${google_service_account.google_autoscalerServiceAccount_7735011D.email}"
+          }
+        }
+      }
+    },
+    "google_cloud_run_v2_job": {
+      "google_ghaJob_F8BA60A9": {
+        "deletion_protection": false,
+        "depends_on": [
+          "null_resource.google_gcloud_D7708493"
+        ],
+        "location": "europe-north1",
+        "name": "gha-runner-job",
+        "template": {
+          "template": {
+            "containers": [
+              {
+                "command": [
+                  "/home/runner/ephemeral_runner.sh"
+                ],
+                "env": [
+                  {
+                    "name": "CLOUDSDK_RUN_REGION",
+                    "value": "europe-north1"
+                  },
+                  {
+                    "name": "GOOGLE_CLOUD_PROJECT",
+                    "value": "gha-runner-example"
+                  },
+                  {
+                    "name": "EXTERNAL_STORAGE_NAME",
+                    "value": "gha-runner-job-externals"
+                  },
+                  {
+                    "name": "TAR_OPTIONS",
+                    "value": "--touch --no-overwrite-dir --no-same-owner"
+                  }
+                ],
+                "image": "\${google_artifact_registry_repository.google_registry_9512CCE4.location}-docker.pkg.dev/gha-runner-example/\${google_artifact_registry_repository.google_registry_9512CCE4.repository_id}/hi-fi/actions-runner:cr",
+                "resources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "2Gi"
+                  }
+                },
+                "volume_mounts": [
+                  {
+                    "mount_path": "/home/runner/_work/externals",
+                    "name": "externals"
+                  }
+                ]
+              }
+            ],
+            "max_retries": 0,
+            "service_account": "\${google_service_account.google_jobServiceAccount_2E7B13C1.email}",
+            "volumes": [
+              {
+                "gcs": {
+                  "bucket": "gha-runner-job-externals"
+                },
+                "name": "externals"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "google_project_iam_custom_role": {
+      "google_autoscalerRole_22D2DF57": {
+        "permissions": [
+          "artifactregistry.dockerimages.get",
+          "artifactregistry.dockerimages.list",
+          "run.jobs.run",
+          "run.jobs.create",
+          "run.jobs.delete"
+        ],
+        "role_id": "ghaAutoscalerRole",
+        "title": "GHA Autoscaler Role"
+      },
+      "google_runnerRole_5138364E": {
+        "permissions": [
+          "artifactregistry.dockerimages.get",
+          "artifactregistry.dockerimages.list",
+          "run.jobs.run",
+          "run.jobs.create",
+          "run.jobs.delete",
+          "run.jobs.list",
+          "run.executions.get"
+        ],
+        "role_id": "ghaRunnerRole",
+        "title": "GHA Runner Role"
+      }
+    },
+    "google_project_iam_member": {
+      "google_autoscalerRoleBindingRunServiceAgent_D7CD86CF": {
+        "member": "\${local.google_autoscalerMember_A1BCDDDA}",
+        "project": "gha-runner-example",
+        "role": "roles/run.serviceAgent"
+      },
+      "google_autoscalerRoleBindingRun_A45078A8": {
+        "member": "\${local.google_autoscalerMember_A1BCDDDA}",
+        "project": "gha-runner-example",
+        "role": "roles/run.developer"
+      },
+      "google_autoscalerRoleBindingStorage_231D9D9B": {
+        "member": "\${local.google_autoscalerMember_A1BCDDDA}",
+        "project": "gha-runner-example",
+        "role": "roles/storage.admin"
+      },
+      "google_runnerRoleBindingRunServiceAgent_781BDE32": {
+        "member": "\${local.google_ghaMember_D48EB3AB}",
+        "project": "gha-runner-example",
+        "role": "roles/run.serviceAgent"
+      },
+      "google_runnerRoleBindingRunViewer_5069E1BD": {
+        "member": "\${local.google_ghaMember_D48EB3AB}",
+        "project": "gha-runner-example",
+        "role": "roles/run.viewer"
+      },
+      "google_runnerRoleBindingStorage_8D6BE75C": {
+        "member": "\${local.google_ghaMember_D48EB3AB}",
+        "project": "gha-runner-example",
+        "role": "roles/storage.admin"
+      },
+      "google_runnerRoleBinding_A9A4507E": {
+        "member": "\${local.google_ghaMember_D48EB3AB}",
+        "project": "gha-runner-example",
+        "role": "\${google_project_iam_custom_role.google_runnerRole_5138364E.id}"
+      }
+    },
+    "google_service_account": {
+      "google_autoscalerServiceAccount_7735011D": {
+        "account_id": "autoscaler-sa"
+      },
+      "google_jobServiceAccount_2E7B13C1": {
+        "account_id": "gha-runner-job-sa"
+      }
+    },
+    "null_resource": {
+      "google_gcloud_D7708493": {
+        "provisioner": [
+          {
+            "local-exec": {
+              "command": "\${local.google_bucketModification_5BC76FE7}"
+            }
+          }
+        ],
+        "triggers": {
+          "fqn": "\${local.google_bucketModification_5BC76FE7}"
+        }
+      }
+    }
+  },
+  "terraform": {
+    "required_providers": {
+      "google": {
+        "source": "google",
+        "version": "6.32.0"
+      },
+      "null": {
+        "source": "null",
+        "version": "3.2.4"
+      }
+    }
+  },
+  "variable": {
+    "google_PAT_D6AD04E8": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
+    },
+    "google_github_config_url_C3483F2D": {
+      "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
+      "nullable": false
     }
   }
 }"

@@ -35,7 +35,11 @@
     "organization": false
   },
   "devDependencies": {
+    "@aws-sdk/client-ecs": "^3.797.0",
+    "@cdktf/provider-aws": "19.62.0",
     "@cdktf/provider-azurerm": "13.26.0",
+    "@cdktf/provider-google": "14.31.0",
+    "@cdktf/provider-null": "10.0.2",
     "@cdktf/provider-random": "11.1.1",
     "@types/jest": "^29.5.14",
     "@types/node": "ts5.6",
@@ -65,7 +69,10 @@
     "typescript": "~5.6.0"
   },
   "peerDependencies": {
+    "@cdktf/provider-aws": "^19.62.0",
     "@cdktf/provider-azurerm": "^13.26.0",
+    "@cdktf/provider-google": "^14.31.0",
+    "@cdktf/provider-null": "^10.0.2",
     "@cdktf/provider-random": "^11.1.1",
     "cdktf": ">=0.20.0",
     "constructs": ">=10.4.2"

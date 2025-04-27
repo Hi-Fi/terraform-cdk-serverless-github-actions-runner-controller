@@ -1,13 +1,31 @@
 import { Testing } from "cdktf";
 import "cdktf/lib/testing/adapters/jest";
 import { Azure } from "../lib/azure";
+import { Gcp } from "../lib/gcp";
+import { Aws } from "../lib/aws";
 
 // To learn more about testing see cdk.tf/testing
-describe("MyConstruct", () => {
-  it("should synthesize", () => {
+describe("Should synthesize snapshot for construct", () => {
+  it("Azure", () => {
     expect(
       Testing.synthScope((scope) => {
-        new Azure(scope, "my-construct");
+        new Azure(scope, "azure");
+      })
+    ).toMatchSnapshot();
+  });
+
+  it("Aws", () => {
+    expect(
+      Testing.synthScope((scope) => {
+        new Aws(scope, "aws");
+      })
+    ).toMatchSnapshot();
+  });
+
+  it("Google", () => {
+    expect(
+      Testing.synthScope((scope) => {
+        new Gcp(scope, "google");
       })
     ).toMatchSnapshot();
   });

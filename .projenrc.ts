@@ -10,7 +10,7 @@ const project = new HybridModule({
   authorAddress: "juho.saarinen@gmail.com",
   defaultReleaseBranch: "main",
   packageManager: NodePackageManager.NPM,
-  devDeps: ["projen-cdktf-hybrid-construct"],
+  devDeps: ["projen-cdktf-hybrid-construct", "@aws-sdk/client-ecs"],
   license: "MIT",
   jsiiVersion: "~5.8.0",
   constructVersion: "10.4.2",
@@ -21,7 +21,13 @@ const project = new HybridModule({
   }),
   repositoryUrl:
     "https://github.com/Hi-Fi/terraform-cdk-serverless-github-actions-runner-controller.git",
-  peerDeps: ["@cdktf/provider-azurerm", "@cdktf/provider-random"],
+  peerDeps: [
+    "@cdktf/provider-azurerm",
+    "@cdktf/provider-random",
+    "@cdktf/provider-aws",
+    "@cdktf/provider-google",
+    "@cdktf/provider-null",
+  ],
   ...publishToRegistries({
     name: "serverless-github-actions-runner-controller",
     namespace: "hi-fi",
