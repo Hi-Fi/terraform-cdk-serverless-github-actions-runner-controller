@@ -1,8 +1,8 @@
 {
-  "name": "terraform-cdk-serverless-github-actions-runner-controller",
+  "name": "@hi-fi/terraform-cdk-serverless-github-actions-runner-controller",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juho.saarinen/terraform-cdk-serverless-github-actions-runner-controller.git"
+    "url": "https://github.com/Hi-Fi/terraform-cdk-serverless-github-actions-runner-controller.git"
   },
   "scripts": {
     "build": "npx projen build",
@@ -30,7 +30,7 @@
     "terraform:test": "./scripts/tf-module-test.sh"
   },
   "author": {
-    "name": "Juho Saarinen",
+    "name": "Hi-Fi",
     "email": "juho.saarinen@gmail.com",
     "organization": false
   },
@@ -81,9 +81,6 @@
   ],
   "main": "lib/index.js",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "version": "0.0.0",
   "jest": {
     "coverageProvider": "v8",

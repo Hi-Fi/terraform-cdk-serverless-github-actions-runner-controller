@@ -6,7 +6,7 @@ import {
 } from "projen-cdktf-hybrid-construct";
 
 const project = new HybridModule({
-  author: "Juho Saarinen",
+  author: "Hi-Fi",
   authorAddress: "juho.saarinen@gmail.com",
   defaultReleaseBranch: "main",
   packageManager: NodePackageManager.NPM,
@@ -14,13 +14,13 @@ const project = new HybridModule({
   license: "MIT",
   jsiiVersion: "~5.8.0",
   constructVersion: "10.4.2",
-  name: "terraform-cdk-serverless-github-actions-runner-controller",
+  name: "@hi-fi/terraform-cdk-serverless-github-actions-runner-controller",
   projenrcTs: true,
   projenCredentials: GithubCredentials.fromPersonalAccessToken({
     secret: "GITHUB_TOKEN",
   }),
   repositoryUrl:
-    "https://github.com/juho.saarinen/terraform-cdk-serverless-github-actions-runner-controller.git",
+    "https://github.com/Hi-Fi/terraform-cdk-serverless-github-actions-runner-controller.git",
   peerDeps: ["@cdktf/provider-azurerm", "@cdktf/provider-random"],
   ...publishToRegistries({
     name: "serverless-github-actions-runner-controller",
