@@ -61,7 +61,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
     },
     "aws_ecs_task_definition": {
       "aws_AutoscalerTaskDefinition_24A76F67": {
-        "container_definitions": "\${jsonencode([{\\"name\\" = \\"autoscaler\\", \\"image\\" = \\"ghcr.io/hi-fi/gha-runners-on-managed-env:test\\", \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"PAT\\", \\"value\\" = var.personal_access_token}, {\\"name\\" = \\"GITHUB_CONFIG_URL\\", \\"value\\" = var.github_config_url}, {\\"name\\" = \\"ECS_CLUSTER\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"SCALE_SET_NAME\\", \\"value\\" = \\"ecs-runner-set\\"}, {\\"name\\" = \\"TASK_DEFINITION_ARN\\", \\"value\\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
+        "container_definitions": "\${jsonencode([{\\"name\\" = \\"autoscaler\\", \\"image\\" = var.autoscaler_image, \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"PAT\\", \\"value\\" = var.personal_access_token}, {\\"name\\" = \\"GITHUB_CONFIG_URL\\", \\"value\\" = var.github_config_url}, {\\"name\\" = \\"ECS_CLUSTER\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"SCALE_SET_NAME\\", \\"value\\" = \\"ecs-runner-set\\"}, {\\"name\\" = \\"TASK_DEFINITION_ARN\\", \\"value\\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
         "cpu": "256",
         "execution_role_arn": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}",
         "family": "Autoscaler",
@@ -125,7 +125,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
       },
       "aws_TeskExecutionRoleAttachment_9AEA9D8D": {
         "policy_arn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-        "role": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}"
+        "role": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.name}"
       }
     }
   },
@@ -133,11 +133,15 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
     "required_providers": {
       "aws": {
         "source": "aws",
-        "version": "5.96.0"
+        "version": "5.97.0"
       }
     }
   },
   "variable": {
+    "autoscaler_image": {
+      "default": "ghcr.io/hi-fi/gha-runners-on-managed-env:ebe559da0d51e04eff903f0a04de09da93f4614f",
+      "description": "Autoscaler image triggering runners"
+    },
     "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
@@ -634,6 +638,10 @@ exports[`Should synthesize snapshot for construct Azure 1`] = `
     }
   },
   "variable": {
+    "autoscaler_image": {
+      "default": "ghcr.io/hi-fi/gha-runners-on-managed-env:ebe559da0d51e04eff903f0a04de09da93f4614f",
+      "description": "Autoscaler image triggering runners"
+    },
     "azure_location_D739E5B1": {
       "default": "westeurope",
       "description": "Location where to provision resources to",
@@ -903,7 +911,7 @@ exports[`Should synthesize snapshot for construct Google 1`] = `
     "required_providers": {
       "google": {
         "source": "google",
-        "version": "6.32.0"
+        "version": "6.34.0"
       },
       "null": {
         "source": "null",
@@ -912,6 +920,10 @@ exports[`Should synthesize snapshot for construct Google 1`] = `
     }
   },
   "variable": {
+    "autoscaler_image": {
+      "default": "ghcr.io/hi-fi/gha-runners-on-managed-env:ebe559da0d51e04eff903f0a04de09da93f4614f",
+      "description": "Autoscaler image triggering runners"
+    },
     "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
