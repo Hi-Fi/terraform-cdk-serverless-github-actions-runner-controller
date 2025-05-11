@@ -46,7 +46,7 @@ export class Aws extends Construct {
 
         const region = new DataAwsRegion(this, 'Region', {})
 
-        const { pat, githubConfigUrl } = commonVariables(this);
+        const { pat, githubConfigUrl, autoscalerImage } = commonVariables(this);
 
         const cluster = new EcsCluster(this, 'Cluster', {
             name: props.clusterName,
@@ -127,7 +127,7 @@ export class Aws extends Construct {
         const autoscalerContainerDefinition: ContainerDefinition =
         {
             name: 'autoscaler',
-            image: 'ghcr.io/hi-fi/gha-runners-on-managed-env:test',
+            image: autoscalerImage.stringValue,
             essential: true,
             environment: [
                 {

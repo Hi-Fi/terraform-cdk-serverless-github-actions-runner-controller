@@ -9,13 +9,14 @@
 ```typescript
 import { Aws } from 'terraform-cdk-serverless-github-actions-runner-controller'
 
-new Aws(scope: Construct, id: string)
+new Aws(scope: Construct, id: string, props: AwsProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.Aws.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
 | <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.Aws.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.Aws.Initializer.parameter.props">props</a></code> | <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps">AwsProps</a></code> | *No description.* |
 
 ---
 
@@ -28,6 +29,12 @@ new Aws(scope: Construct, id: string)
 ##### `id`<sup>Required</sup> <a name="id" id="terraform-cdk-serverless-github-actions-runner-controller.Aws.Initializer.parameter.id"></a>
 
 - *Type:* string
+
+---
+
+##### `props`<sup>Required</sup> <a name="props" id="terraform-cdk-serverless-github-actions-runner-controller.Aws.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps">AwsProps</a>
 
 ---
 
@@ -320,6 +327,72 @@ The tree node.
 ---
 
 
+## Structs <a name="Structs" id="Structs"></a>
+
+### AwsProps <a name="AwsProps" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps"></a>
+
+#### Initializer <a name="Initializer" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.Initializer"></a>
+
+```typescript
+import { AwsProps } from 'terraform-cdk-serverless-github-actions-runner-controller'
+
+const awsProps: AwsProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.containerSupport">containerSupport</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.securityGroupFilters">securityGroupFilters</a></code> | <code>@cdktf/provider-aws.dataAwsSecurityGroups.DataAwsSecurityGroupsFilter[]</code> | *No description.* |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.subnetFilters">subnetFilters</a></code> | <code>@cdktf/provider-aws.dataAwsSubnets.DataAwsSubnetsFilter[]</code> | *No description.* |
+
+---
+
+##### `clusterName`<sup>Required</sup> <a name="clusterName" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.clusterName"></a>
+
+```typescript
+public readonly clusterName: string;
+```
+
+- *Type:* string
+
+---
+
+##### `containerSupport`<sup>Required</sup> <a name="containerSupport" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.containerSupport"></a>
+
+```typescript
+public readonly containerSupport: boolean;
+```
+
+- *Type:* boolean
+
+---
+
+##### `securityGroupFilters`<sup>Optional</sup> <a name="securityGroupFilters" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.securityGroupFilters"></a>
+
+```typescript
+public readonly securityGroupFilters: DataAwsSecurityGroupsFilter[];
+```
+
+- *Type:* @cdktf/provider-aws.dataAwsSecurityGroups.DataAwsSecurityGroupsFilter[]
+
+> [https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
+
+---
+
+##### `subnetFilters`<sup>Optional</sup> <a name="subnetFilters" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.subnetFilters"></a>
+
+```typescript
+public readonly subnetFilters: DataAwsSubnetsFilter[];
+```
+
+- *Type:* @cdktf/provider-aws.dataAwsSubnets.DataAwsSubnetsFilter[]
+
+> [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html)
+
+---
 
 
 
