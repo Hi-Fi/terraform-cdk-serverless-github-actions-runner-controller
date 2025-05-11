@@ -345,8 +345,8 @@ const awsProps: AwsProps = { ... }
 | --- | --- | --- |
 | <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.clusterName">clusterName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.containerSupport">containerSupport</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.securityGroupFilters">securityGroupFilters</a></code> | <code>@cdktf/provider-aws.dataAwsSecurityGroups.DataAwsSecurityGroupsFilter[]</code> | *No description.* |
-| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.subnetFilters">subnetFilters</a></code> | <code>@cdktf/provider-aws.dataAwsSubnets.DataAwsSubnetsFilter[]</code> | *No description.* |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.securityGroupFilters">securityGroupFilters</a></code> | <code>cdktf.IResolvable \| @cdktf/provider-aws.dataAwsSecurityGroups.DataAwsSecurityGroupsFilter[]</code> | *No description.* |
+| <code><a href="#terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.subnetFilters">subnetFilters</a></code> | <code>cdktf.IResolvable \| @cdktf/provider-aws.dataAwsSubnets.DataAwsSubnetsFilter[]</code> | *No description.* |
 
 ---
 
@@ -373,10 +373,10 @@ public readonly containerSupport: boolean;
 ##### `securityGroupFilters`<sup>Optional</sup> <a name="securityGroupFilters" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.securityGroupFilters"></a>
 
 ```typescript
-public readonly securityGroupFilters: DataAwsSecurityGroupsFilter[];
+public readonly securityGroupFilters: IResolvable | DataAwsSecurityGroupsFilter[];
 ```
 
-- *Type:* @cdktf/provider-aws.dataAwsSecurityGroups.DataAwsSecurityGroupsFilter[]
+- *Type:* cdktf.IResolvable | @cdktf/provider-aws.dataAwsSecurityGroups.DataAwsSecurityGroupsFilter[]
 
 > [https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
 
@@ -385,10 +385,10 @@ public readonly securityGroupFilters: DataAwsSecurityGroupsFilter[];
 ##### `subnetFilters`<sup>Optional</sup> <a name="subnetFilters" id="terraform-cdk-serverless-github-actions-runner-controller.AwsProps.property.subnetFilters"></a>
 
 ```typescript
-public readonly subnetFilters: DataAwsSubnetsFilter[];
+public readonly subnetFilters: IResolvable | DataAwsSubnetsFilter[];
 ```
 
-- *Type:* @cdktf/provider-aws.dataAwsSubnets.DataAwsSubnetsFilter[]
+- *Type:* cdktf.IResolvable | @cdktf/provider-aws.dataAwsSubnets.DataAwsSubnetsFilter[]
 
 > [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html)
 

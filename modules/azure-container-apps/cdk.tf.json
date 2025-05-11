@@ -3,7 +3,7 @@
     "metadata": {
       "backend": "local",
       "stackName": "azure-container-apps",
-      "version": "0.20.12"
+      "version": "0.20.0"
     },
     "outputs": {
     }
