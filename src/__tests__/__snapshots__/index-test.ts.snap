@@ -37,7 +37,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
     },
     "aws_ecs_cluster": {
       "aws_Cluster_BA268616": {
-        "name": "gha-runner-cluster"
+        "name": "test-cluster"
       }
     },
     "aws_ecs_service": {
@@ -61,7 +61,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
     },
     "aws_ecs_task_definition": {
       "aws_AutoscalerTaskDefinition_24A76F67": {
-        "container_definitions": "\${jsonencode([{\\"name\\" = \\"autoscaler\\", \\"image\\" = \\"ghcr.io/hi-fi/gha-runners-on-managed-env:test\\", \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"PAT\\", \\"value\\" = var.PAT}, {\\"name\\" = \\"GITHUB_CONFIG_URL\\", \\"value\\" = var.github_config_url}, {\\"name\\" = \\"TASK_DEFINITION_ARN\\", \\"value\\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}, {\\"name\\" = \\"ECS_CLUSTER\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"SCALE_SET_NAME\\", \\"value\\" = \\"ecs-runner-set\\"}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
+        "container_definitions": "\${jsonencode([{\\"name\\" = \\"autoscaler\\", \\"image\\" = \\"ghcr.io/hi-fi/gha-runners-on-managed-env:test\\", \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"PAT\\", \\"value\\" = var.personal_access_token}, {\\"name\\" = \\"GITHUB_CONFIG_URL\\", \\"value\\" = var.github_config_url}, {\\"name\\" = \\"ECS_CLUSTER\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.arn}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"SCALE_SET_NAME\\", \\"value\\" = \\"ecs-runner-set\\"}, {\\"name\\" = \\"TASK_DEFINITION_ARN\\", \\"value\\" = aws_ecs_task_definition.aws_RunnerTaskDefinition_9C7563BE.arn}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_AutoscalerLogGroup_BFE58053.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
         "cpu": "256",
         "execution_role_arn": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}",
         "family": "Autoscaler",
@@ -77,7 +77,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
         "task_role_arn": "\${aws_iam_role.aws_AutoscalerRole_CEB26423.arn}"
       },
       "aws_RunnerTaskDefinition_9C7563BE": {
-        "container_definitions": "\${jsonencode([{\\"name\\" = \\"runner\\", \\"image\\" = \\"ghcr.io/hi-fi/actions-runner:ecs\\", \\"command\\" = [\\"/bin/sh\\", \\"-c\\", \\"export EXECID=$(cat /proc/sys/kernel/random/uuid) && sudo mkdir -p /tmp/_work/$EXECID && sudo chown runner:runner /tmp/_work/$EXECID && ln -s /tmp/_work/$EXECID _work && sudo chown runner:runner /tmp/externals && /home/runner/run.sh ; sudo rm -r /tmp/_work/$EXECID\\"], \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"EFS_ID\\", \\"value\\" = aws_efs_file_system.aws_efs_B3BBB350.id}, {\\"name\\" = \\"EXTERNALS_EFS_ID\\", \\"value\\" = aws_efs_file_system.aws_externalsEfs_C15353C9.id}, {\\"name\\" = \\"ECS_CLUSTER_NAME\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.name}, {\\"name\\" = \\"ACTIONS_RUNNER_POD_NAME\\", \\"value\\" = \\"gha-pod\\"}, {\\"name\\" = \\"ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER\\", \\"value\\" = \\"false\\"}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"ECS_TASK_ROLE\\", \\"value\\" = aws_iam_role.aws_RunnerRole_75263C23.arn}, {\\"name\\" = \\"ECS_EXECUTION_ROLE\\", \\"value\\" = aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}], \\"mountPoints\\" = [{\\"sourceVolume\\" = \\"work\\", \\"containerPath\\" = \\"/tmp/_work\\"}, {\\"sourceVolume\\" = \\"externals\\", \\"containerPath\\" = \\"/tmp/externals\\"}], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_RunnerLogGroup_711756A6.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
+        "container_definitions": "\${jsonencode([{\\"name\\" = \\"runner\\", \\"image\\" = \\"ghcr.io/actions/actions-runner:2.323.0\\", \\"essential\\" = true, \\"environment\\" = [{\\"name\\" = \\"ECS_CLUSTER_NAME\\", \\"value\\" = aws_ecs_cluster.aws_Cluster_BA268616.name}, {\\"name\\" = \\"ACTIONS_RUNNER_POD_NAME\\", \\"value\\" = \\"gha-pod\\"}, {\\"name\\" = \\"ECS_SUBNETS\\", \\"value\\" = join(\\",\\", data.aws_subnets.aws_Subnets_75E5377D.ids)}, {\\"name\\" = \\"ECS_SECURITY_GROUPS\\", \\"value\\" = join(\\",\\", data.aws_security_groups.aws_SecurityGroups_BAABB08D.ids)}, {\\"name\\" = \\"ECS_TASK_ROLE\\", \\"value\\" = aws_iam_role.aws_RunnerRole_75263C23.arn}, {\\"name\\" = \\"ECS_EXECUTION_ROLE\\", \\"value\\" = aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}], \\"mountPoints\\" = [], \\"logConfiguration\\" = {\\"logDriver\\" = \\"awslogs\\", \\"options\\" = {\\"awslogs-group\\" = aws_cloudwatch_log_group.aws_RunnerLogGroup_711756A6.name, \\"awslogs-region\\" = data.aws_region.aws_Region_7477CA06.name, \\"awslogs-stream-prefix\\" = \\"ecs\\"}}}])}",
         "cpu": "1024",
         "execution_role_arn": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}",
         "family": "GHA",
@@ -92,45 +92,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
         },
         "task_role_arn": "\${aws_iam_role.aws_RunnerRole_75263C23.arn}",
         "volume": [
-          {
-            "efs_volume_configuration": {
-              "file_system_id": "\${aws_efs_file_system.aws_efs_B3BBB350.id}"
-            },
-            "name": "work"
-          },
-          {
-            "efs_volume_configuration": {
-              "file_system_id": "\${aws_efs_file_system.aws_externalsEfs_C15353C9.id}"
-            },
-            "name": "externals"
-          }
         ]
-      }
-    },
-    "aws_efs_file_system": {
-      "aws_efs_B3BBB350": {
-        "tags": {
-          "Name": "work"
-        },
-        "throughput_mode": "elastic"
-      },
-      "aws_externalsEfs_C15353C9": {
-        "tags": {
-          "Name": "externals"
-        },
-        "throughput_mode": "elastic"
-      }
-    },
-    "aws_efs_mount_target": {
-      "aws_EfsMountTarget_B2BDD3E5": {
-        "file_system_id": "\${aws_efs_file_system.aws_efs_B3BBB350.id}",
-        "for_each": "\${toset(data.aws_subnets.aws_Subnets_75E5377D.ids)}",
-        "subnet_id": "\${each.value}"
-      },
-      "aws_ExternalsEfsMountTarget_2D9AE418": {
-        "file_system_id": "\${aws_efs_file_system.aws_externalsEfs_C15353C9.id}",
-        "for_each": "\${toset(data.aws_subnets.aws_Subnets_75E5377D.ids)}",
-        "subnet_id": "\${each.value}"
       }
     },
     "aws_iam_policy": {
@@ -149,10 +111,7 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
         "assume_role_policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Effect\\" = \\"Allow\\", \\"Principal\\" = {\\"Service\\" = \\"ecs-tasks.amazonaws.com\\"}, \\"Action\\" = \\"sts:AssumeRole\\"}]})}"
       },
       "aws_TaskExecutionRole_FAB64402": {
-        "assume_role_policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Effect\\" = \\"Allow\\", \\"Principal\\" = {\\"Service\\" = \\"ecs-tasks.amazonaws.com\\"}, \\"Action\\" = \\"sts:AssumeRole\\"}]})}",
-        "managed_policy_arns": [
-          "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-        ]
+        "assume_role_policy": "\${jsonencode({\\"Version\\" = \\"2012-10-17\\", \\"Statement\\" = [{\\"Effect\\" = \\"Allow\\", \\"Principal\\" = {\\"Service\\" = \\"ecs-tasks.amazonaws.com\\"}, \\"Action\\" = \\"sts:AssumeRole\\"}]})}"
       }
     },
     "aws_iam_role_policy_attachment": {
@@ -163,6 +122,10 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
       "aws_RunnerPolicyAttachment_A293771C": {
         "policy_arn": "\${aws_iam_policy.aws_RunnerPolicy_7B21DB81.arn}",
         "role": "\${aws_iam_role.aws_RunnerRole_75263C23.name}"
+      },
+      "aws_TeskExecutionRoleAttachment_9AEA9D8D": {
+        "policy_arn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+        "role": "\${aws_iam_role.aws_TaskExecutionRole_FAB64402.arn}"
       }
     }
   },
@@ -175,14 +138,14 @@ exports[`Should synthesize snapshot for construct Aws 1`] = `
     }
   },
   "variable": {
-    "PAT": {
-      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
-      "nullable": false,
-      "sensitive": true
-    },
     "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
+    },
+    "personal_access_token": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
     }
   }
 }"
@@ -469,7 +432,7 @@ exports[`Should synthesize snapshot for construct Azure 1`] = `
         "secret": [
           {
             "name": "pat",
-            "value": "\${var.PAT}"
+            "value": "\${var.personal_access_token}"
           }
         ],
         "template": {
@@ -671,11 +634,6 @@ exports[`Should synthesize snapshot for construct Azure 1`] = `
     }
   },
   "variable": {
-    "PAT": {
-      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
-      "nullable": false,
-      "sensitive": true
-    },
     "azure_location_D739E5B1": {
       "default": "westeurope",
       "description": "Location where to provision resources to",
@@ -686,6 +644,11 @@ exports[`Should synthesize snapshot for construct Azure 1`] = `
     "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
+    },
+    "personal_access_token": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
     }
   }
 }"
@@ -751,7 +714,7 @@ exports[`Should synthesize snapshot for construct Google 1`] = `
                 "env": [
                   {
                     "name": "PAT",
-                    "value": "\${var.PAT}"
+                    "value": "\${var.personal_access_token}"
                   },
                   {
                     "name": "GITHUB_CONFIG_URL",
@@ -949,14 +912,14 @@ exports[`Should synthesize snapshot for construct Google 1`] = `
     }
   },
   "variable": {
-    "PAT": {
-      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
-      "nullable": false,
-      "sensitive": true
-    },
     "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
+    },
+    "personal_access_token": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
     }
   }
 }"

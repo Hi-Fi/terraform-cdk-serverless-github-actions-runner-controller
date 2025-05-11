@@ -17,7 +17,10 @@ describe("Should synthesize snapshot for construct", () => {
   it("Aws", () => {
     expect(
       Testing.synthScope((scope) => {
-        new Aws(scope, "aws");
+        new Aws(scope, "aws", {
+          clusterName: 'test-cluster',
+          containerSupport: false
+        });
       })
     ).toMatchSnapshot();
   });

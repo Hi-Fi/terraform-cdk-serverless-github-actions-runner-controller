@@ -3,7 +3,7 @@
     "metadata": {
       "backend": "local",
       "stackName": "azure-container-apps",
-      "version": "0.20.0"
+      "version": "0.20.12"
     },
     "outputs": {
     }
@@ -329,7 +329,7 @@
         "secret": [
           {
             "name": "pat",
-            "value": "${var.PAT}"
+            "value": "${var.personal_access_token}"
           }
         ],
         "template": {
@@ -615,11 +615,6 @@
     }
   },
   "variable": {
-    "PAT": {
-      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
-      "nullable": false,
-      "sensitive": true
-    },
     "aca_location_486B7D73": {
       "default": "westeurope",
       "description": "Location where to provision resources to",
@@ -627,9 +622,18 @@
       "sensitive": false,
       "type": "string"
     },
+    "autoscaler_image": {
+      "default": "ghcr.io/hi-fi/gha-runners-on-managed-env:ebe559da0d51e04eff903f0a04de09da93f4614f",
+      "description": "Autoscaler image triggering runners"
+    },
     "github_config_url": {
       "description": "Github URL where runners should register to. Format https://<GitHub host>/<your_enterprise/org/repo>",
       "nullable": false
+    },
+    "personal_access_token": {
+      "description": "Github PAT with Actions:Read and Admin:Read+Write scopes",
+      "nullable": false,
+      "sensitive": true
     }
   }
 }

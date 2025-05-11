@@ -64,9 +64,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_PAT"></a> [PAT](#input\_PAT) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
 | <a name="input_aca_location_486B7D73"></a> [aca\_location\_486B7D73](#input\_aca\_location\_486B7D73) | Location where to provision resources to | `string` | `"westeurope"` | no |
+| <a name="input_autoscaler_image"></a> [autoscaler\_image](#input\_autoscaler\_image) | Autoscaler image triggering runners | `string` | `"ghcr.io/hi-fi/gha-runners-on-managed-env:ebe559da0d51e04eff903f0a04de09da93f4614f"` | no |
 | <a name="input_github_config_url"></a> [github\_config\_url](#input\_github\_config\_url) | Github URL where runners should register to. Format https://<GitHub host>/<your\_enterprise/org/repo> | `any` | n/a | yes |
+| <a name="input_personal_access_token"></a> [personal\_access\_token](#input\_personal\_access\_token) | Github PAT with Actions:Read and Admin:Read+Write scopes | `any` | n/a | yes |
 
 ## Outputs
 

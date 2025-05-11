@@ -7,20 +7,23 @@ locals {
 module "ecs" {
     count = local.is_ecs
     source = "./modules/elastic-container-service"
-    PAT = var.PAT
+    personal_access_token = var.personal_access_token
     github_config_url = var.github_config_url
+    ecs_cluster_name = var.ecs_cluster_name
+    ecs_security_group_filters = var.ecs_security_group_filters
+    ecs_subnet_filters = var.ecs_subnet_filters
 }
 
 module "aca" {
   count = local.is_aca
   source = "./modules/azure-container-apps"
-  PAT = var.PAT
+  personal_access_token = var.personal_access_token
   github_config_url = var.github_config_url
 }
 
 module "gcr" {
   count = local.is_cr
   source = "./modules/google-cloud-run"
-  PAT = var.PAT
+  personal_access_token = var.personal_access_token
   github_config_url = var.github_config_url
 }
