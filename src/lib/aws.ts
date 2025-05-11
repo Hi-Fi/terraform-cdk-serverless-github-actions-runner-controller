@@ -171,6 +171,7 @@ export class Aws extends Construct {
             name: 'runner',
             image: 'ghcr.io/actions/actions-runner:2.323.0',
             essential: true,
+            entryPoint: ['/home/runner/run.sh'],
             environment: [
                 {
                     name: 'ECS_CLUSTER_NAME',
