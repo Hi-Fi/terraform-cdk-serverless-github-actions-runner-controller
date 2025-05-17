@@ -1,3 +1,4 @@
+import { Vitest } from "@nikovirtala/projen-vitest";
 import { GithubCredentials } from "projen/lib/github";
 import { NodePackageManager } from "projen/lib/javascript";
 import {
@@ -10,7 +11,11 @@ const project = new HybridModule({
   authorAddress: "juho.saarinen@gmail.com",
   defaultReleaseBranch: "main",
   packageManager: NodePackageManager.NPM,
-  devDeps: ["projen-cdktf-hybrid-construct", "@aws-sdk/client-ecs"],
+  devDeps: [
+    "projen-cdktf-hybrid-construct",
+    "@aws-sdk/client-ecs",
+    "@nikovirtala/projen-vitest",
+  ],
   license: "MIT",
   jsiiVersion: "~5.8.0",
   constructVersion: "10.4.2",
@@ -37,7 +42,8 @@ const project = new HybridModule({
     namespace: "hi-fi",
     registries: ["npm"],
   }),
-
+  // use Vitest instead
+  jest: false,
   // cdktfVersion: "0.20.0",        /* Minimum target version of this library. */
   // constructExamples: undefined,  /* If set a construct examples folder will be created. */
   // deps: [],                      /* Runtime dependencies of this module. */
@@ -50,5 +56,7 @@ project.github?.actions.set(
   "hashicorp/setup-terraform",
   "hashicorp/setup-terraform@v3",
 );
+
+new Vitest(project);
 
 project.synth();

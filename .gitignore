@@ -31,9 +31,6 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
-/test-reports/
-junit.xml
-/coverage/
 !/.github/workflows/build.yml
 /dist/changelog.md
 /dist/version.txt
@@ -54,4 +51,6 @@ src/.gen
 src/cdktf.out
 src/modules
 !/scripts/copy-modules.sh
+/coverage/
+!/vitest.config.ts
 !/.projenrc.ts
