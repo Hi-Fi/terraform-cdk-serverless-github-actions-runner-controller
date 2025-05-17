@@ -31,12 +31,13 @@
     "commit-and-tag-version",
     "constructs",
     "eslint",
-    "jest-junit",
     "jsii-docgen",
     "jsii-rosetta",
     "jsii",
     "ts-node",
     "typescript",
+    "vitest",
+    "@vitest/coverage-v8",
     "@cdktf/tf-module-stack",
     "projen"
   ]
