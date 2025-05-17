@@ -19,6 +19,10 @@ const project = new HybridModule({
   projenCredentials: GithubCredentials.fromPersonalAccessToken({
     secret: "GITHUB_TOKEN",
   }),
+  depsUpgradeOptions: {
+    workflow: false,
+  },
+  renovatebot: true,
   repositoryUrl:
     "https://github.com/Hi-Fi/terraform-cdk-serverless-github-actions-runner-controller.git",
   peerDeps: [
