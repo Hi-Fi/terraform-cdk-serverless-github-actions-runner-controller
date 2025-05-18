@@ -1,53 +1,51 @@
-import { Testing } from "cdktf";
-import "cdktf/lib/testing/adapters/jest";
-import { Azure } from "../src/lib/azure";
-import { Gcp } from "../src/lib/gcp";
-import { Aws } from "../src/lib/aws";
-import { describe, expect, it } from "vitest";
-
+import { Testing } from 'cdktf'
+import 'cdktf/lib/testing/adapters/jest'
+import { describe, expect, it } from 'vitest'
+import { Aws } from '../src/lib/aws'
+import { Azure } from '../src/lib/azure'
+import { Gcp } from '../src/lib/gcp'
 
 // To learn more about testing see cdk.tf/testing
-describe("Should synthesize snapshot for construct", () => {
+describe('Should synthesize snapshot for construct', () => {
   describe('without container support on', () => {
-    it("Azure", () => {
+    it('Azure', () => {
       expect(
         Testing.synthScope((scope) => {
-          new Azure(scope, "azure");
-        })
-      ).toMatchSnapshot();
-    });
+          new Azure(scope, 'azure')
+        }),
+      ).toMatchSnapshot()
+    })
 
-    it("Aws", () => {
+    it('Aws', () => {
       expect(
         Testing.synthScope((scope) => {
-          new Aws(scope, "aws", {
+          new Aws(scope, 'aws', {
             clusterName: 'test-cluster',
-            containerSupport: false
-          });
-        })
-      ).toMatchSnapshot();
-    });
+            containerSupport: false,
+          })
+        }),
+      ).toMatchSnapshot()
+    })
 
-    it("Google", () => {
+    it('Google', () => {
       expect(
         Testing.synthScope((scope) => {
-          new Gcp(scope, "google");
-        })
-      ).toMatchSnapshot();
-    });
-  });
+          new Gcp(scope, 'google')
+        }),
+      ).toMatchSnapshot()
+    })
+  })
 
   describe('with container support on', () => {
-
-    it("Aws", () => {
+    it('Aws', () => {
       expect(
         Testing.synthScope((scope) => {
-          new Aws(scope, "aws", {
+          new Aws(scope, 'aws', {
             clusterName: 'test-cluster',
-            containerSupport: true
-          });
-        })
-      ).toMatchSnapshot();
-    });
+            containerSupport: true,
+          })
+        }),
+      ).toMatchSnapshot()
+    })
   })
-});
+})

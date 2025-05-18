@@ -36,14 +36,11 @@ jspm_packages/
 /dist/version.txt
 !/.github/workflows/release.yml
 !/.github/pull_request_template.md
-!/.prettierignore
-!/.prettierrc.json
-!/test/
+!/tests/
 !/tsconfig.dev.json
 !/src/
 /lib
 /dist/
-!/.eslintrc.json
 .jsii
 tsconfig.json
 !/API.md
@@ -53,4 +50,5 @@ src/modules
 !/scripts/copy-modules.sh
 /coverage/
 !/vitest.config.ts
+!/biome.jsonc
 !/.projenrc.ts
