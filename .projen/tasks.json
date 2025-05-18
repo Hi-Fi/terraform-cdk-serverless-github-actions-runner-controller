@@ -1,5 +1,14 @@
 {
   "tasks": {
+    "biome": {
+      "name": "biome",
+      "description": "Runs Biome against the codebase",
+      "steps": [
+        {
+          "exec": "biome check --write .projenrc.ts src tests"
+        }
+      ]
+    },
     "build": {
       "name": "build",
       "description": "Full release build",
@@ -135,19 +144,6 @@
         }
       ]
     },
-    "eslint": {
-      "name": "eslint",
-      "description": "Runs eslint against the codebase",
-      "env": {
-        "ESLINT_USE_FLAT_CONFIG": "false"
-      },
-      "steps": [
-        {
-          "exec": "eslint --fix --no-error-on-unmatched-pattern $@ src test build-tools projenrc .projenrc.ts",
-          "receiveArgs": true
-        }
-      ]
-    },
     "install": {
       "name": "install",
       "description": "Install project dependencies and update lockfile (non-frozen)",
@@ -244,11 +240,11 @@
       "description": "Run tests",
       "steps": [
         {
-          "spawn": "eslint"
-        },
-        {
           "exec": "vitest run",
           "receiveArgs": true
+        },
+        {
+          "spawn": "biome"
         }
       ]
     },
@@ -295,13 +291,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-sdk/client-ecs,@nikovirtala/projen-vitest,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,jsii-diff,jsii-pacmak,prettier,projen,projen-cdktf-hybrid-construct,@cdktf/provider-aws,@cdktf/provider-azurerm,@cdktf/provider-google,@cdktf/provider-null,@cdktf/provider-random"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-sdk/client-ecs,@nikovirtala/projen-vitest,jsii-diff,jsii-pacmak,projen,projen-biome,projen-cdktf-hybrid-construct,@cdktf/provider-aws,@cdktf/provider-azurerm,@cdktf/provider-google,@cdktf/provider-null,@cdktf/provider-random"
         },
         {
           "exec": "npm install"
         },
         {
-          "exec": "npm update @aws-sdk/client-ecs @nikovirtala/projen-vitest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser cdktf-cli cdktf commit-and-tag-version constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen projen-cdktf-hybrid-construct ts-node typescript vitest @vitest/coverage-v8 @cdktf/provider-aws @cdktf/provider-azurerm @cdktf/provider-google @cdktf/provider-null @cdktf/provider-random @cdktf/tf-module-stack"
+          "exec": "npm update @aws-sdk/client-ecs @biomejs/biome @nikovirtala/projen-vitest @types/node cdktf-cli cdktf commit-and-tag-version constructs jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen projen-biome projen-cdktf-hybrid-construct ts-node typescript vitest @vitest/coverage-v8 @cdktf/provider-aws @cdktf/provider-azurerm @cdktf/provider-google @cdktf/provider-null @cdktf/provider-random @cdktf/tf-module-stack"
         },
         {
           "exec": "npx projen"
