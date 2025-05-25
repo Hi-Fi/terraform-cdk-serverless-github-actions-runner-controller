@@ -333,7 +333,7 @@
     "required_providers": {
       "google": {
         "source": "google",
-        "version": "6.35.0"
+        "version": "6.36.1"
       },
       "null": {
         "source": "null",

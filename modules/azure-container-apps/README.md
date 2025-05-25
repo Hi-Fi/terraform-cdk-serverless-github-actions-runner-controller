@@ -16,7 +16,7 @@ module "arc_on_aca" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 2.3.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 4.29.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 4.30.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.7.2 |
 
 ## Providers
@@ -24,7 +24,7 @@ module "arc_on_aca" {
 | Name | Version |
 |------|---------|
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.3.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.29.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.30.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
 
 ## Modules
@@ -42,23 +42,23 @@ No modules.
 | [azapi_resource.aca_runnerCache_2C48ECD2](https://registry.terraform.io/providers/azure/azapi/2.3.0/docs/resources/resource) | resource |
 | [azapi_resource.aca_storageAccount_C1F07B26](https://registry.terraform.io/providers/azure/azapi/2.3.0/docs/resources/resource) | resource |
 | [azapi_resource.aca_storageShare_5702AE2C](https://registry.terraform.io/providers/azure/azapi/2.3.0/docs/resources/resource) | resource |
-| [azurerm_container_app.aca_autoscalerApp_63FADD45](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/container_app) | resource |
-| [azurerm_container_app_environment_storage.aca_acaenvstorage_23C615A5](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/container_app_environment_storage) | resource |
-| [azurerm_container_app_environment_storage.aca_acaexternalstorage_B8141EC0](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/container_app_environment_storage) | resource |
-| [azurerm_container_registry.aca_acr_DEECF884](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/container_registry) | resource |
-| [azurerm_log_analytics_workspace.aca_log_B150D83C](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/log_analytics_workspace) | resource |
-| [azurerm_resource_group.aca_rg_AD6EB8ED](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/resource_group) | resource |
-| [azurerm_role_assignment.aca_actionContainerStartRoleAssignment_941E620A](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aca_imagePushRoleAssignment_8F2241FD](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aca_jobLogReadAssignment_E0C92A22](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aca_roleAssignment_A6BA6095](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.aca_scaleJobRoleAssignment_5738140A](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_definition.aca_jobCreationRole_9EFE12E7](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_definition) | resource |
-| [azurerm_role_definition.aca_jobRole_21145D6F](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/role_definition) | resource |
-| [azurerm_user_assigned_identity.aca_identity_9571D28D](https://registry.terraform.io/providers/azurerm/4.29.0/docs/resources/user_assigned_identity) | resource |
+| [azurerm_container_app.aca_autoscalerApp_63FADD45](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/container_app) | resource |
+| [azurerm_container_app_environment_storage.aca_acaenvstorage_23C615A5](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/container_app_environment_storage) | resource |
+| [azurerm_container_app_environment_storage.aca_acaexternalstorage_B8141EC0](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/container_app_environment_storage) | resource |
+| [azurerm_container_registry.aca_acr_DEECF884](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/container_registry) | resource |
+| [azurerm_log_analytics_workspace.aca_log_B150D83C](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/log_analytics_workspace) | resource |
+| [azurerm_resource_group.aca_rg_AD6EB8ED](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.aca_actionContainerStartRoleAssignment_941E620A](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aca_imagePushRoleAssignment_8F2241FD](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aca_jobLogReadAssignment_E0C92A22](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aca_roleAssignment_A6BA6095](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.aca_scaleJobRoleAssignment_5738140A](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_definition.aca_jobCreationRole_9EFE12E7](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_definition) | resource |
+| [azurerm_role_definition.aca_jobRole_21145D6F](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/role_definition) | resource |
+| [azurerm_user_assigned_identity.aca_identity_9571D28D](https://registry.terraform.io/providers/azurerm/4.30.0/docs/resources/user_assigned_identity) | resource |
 | [random_string.aca_randomSuffix_B2CE1226](https://registry.terraform.io/providers/hashicorp/random/3.7.2/docs/resources/string) | resource |
 | [azapi_resource_action.aca_storageAccessKeys_4F266A39](https://registry.terraform.io/providers/azure/azapi/2.3.0/docs/data-sources/resource_action) | data source |
-| [azurerm_subscription.aca_sub_C75A43F0](https://registry.terraform.io/providers/azurerm/4.29.0/docs/data-sources/subscription) | data source |
+| [azurerm_subscription.aca_sub_C75A43F0](https://registry.terraform.io/providers/azurerm/4.30.0/docs/data-sources/subscription) | data source |
 
 ## Inputs
 
