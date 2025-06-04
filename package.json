@@ -38,7 +38,7 @@
   "devDependencies": {
     "@aws-sdk/client-ecs": "^3.804.0",
     "@biomejs/biome": "^1",
-    "@cdktf/provider-aws": "19.64.0",
+    "@cdktf/provider-aws": "20.0.0",
     "@cdktf/provider-azurerm": "13.28.0",
     "@cdktf/provider-google": "14.34.0",
     "@cdktf/provider-null": "10.0.2",
@@ -63,7 +63,7 @@
     "vitest": "^3"
   },
   "peerDependencies": {
-    "@cdktf/provider-aws": "^19.62.0",
+    "@cdktf/provider-aws": "^20.0.0",
     "@cdktf/provider-azurerm": "^13.26.0",
     "@cdktf/provider-google": "^14.31.0",
     "@cdktf/provider-null": "^10.0.2",
