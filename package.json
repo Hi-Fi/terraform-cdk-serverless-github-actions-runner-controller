@@ -40,7 +40,7 @@
     "@biomejs/biome": "^1",
     "@cdktf/provider-aws": "19.64.0",
     "@cdktf/provider-azurerm": "13.28.0",
-    "@cdktf/provider-google": "14.34.0",
+    "@cdktf/provider-google": "15.0.0",
     "@cdktf/provider-null": "10.0.2",
     "@cdktf/provider-random": "11.1.1",
     "@nikovirtala/projen-vitest": "^2.0.27",
@@ -65,7 +65,7 @@
   "peerDependencies": {
     "@cdktf/provider-aws": "^19.62.0",
     "@cdktf/provider-azurerm": "^13.26.0",
-    "@cdktf/provider-google": "^14.31.0",
+    "@cdktf/provider-google": "^15.0.0",
     "@cdktf/provider-null": "^10.0.2",
     "@cdktf/provider-random": "^11.1.1",
     "cdktf": ">=0.20.0",
