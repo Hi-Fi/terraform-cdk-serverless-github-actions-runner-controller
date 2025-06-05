@@ -42,7 +42,7 @@
     "@cdktf/provider-azurerm": "13.28.0",
     "@cdktf/provider-google": "14.34.0",
     "@cdktf/provider-null": "10.0.2",
-    "@cdktf/provider-random": "11.1.1",
+    "@cdktf/provider-random": "12.0.0",
     "@nikovirtala/projen-vitest": "^2.0.27",
     "@types/node": "ts5.6",
     "@vitest/coverage-v8": "^3",
@@ -67,7 +67,7 @@
     "@cdktf/provider-azurerm": "^13.26.0",
     "@cdktf/provider-google": "^14.31.0",
     "@cdktf/provider-null": "^10.0.2",
-    "@cdktf/provider-random": "^11.1.1",
+    "@cdktf/provider-random": "^12.0.0",
     "cdktf": ">=0.20.0",
     "constructs": ">=10.4.2"
   },
