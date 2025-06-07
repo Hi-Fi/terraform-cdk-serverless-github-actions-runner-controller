@@ -3,7 +3,7 @@
     "metadata": {
       "backend": "local",
       "stackName": "elastic-container-service",
-      "version": "0.20.0"
+      "version": "0.21.0"
     },
     "outputs": {
     }
@@ -261,7 +261,7 @@
     "required_providers": {
       "aws": {
         "source": "aws",
-        "version": "5.98.0"
+        "version": "5.99.1"
       }
     }
   },
