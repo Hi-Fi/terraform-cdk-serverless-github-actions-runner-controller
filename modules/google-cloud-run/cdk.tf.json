@@ -3,7 +3,7 @@
     "metadata": {
       "backend": "local",
       "stackName": "google-cloud-run",
-      "version": "0.20.0"
+      "version": "0.21.0"
     },
     "outputs": {
     }
@@ -333,7 +333,7 @@
     "required_providers": {
       "google": {
         "source": "google",
-        "version": "6.35.0"
+        "version": "6.38.0"
       },
       "null": {
         "source": "null",
