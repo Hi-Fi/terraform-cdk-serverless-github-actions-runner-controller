@@ -29,6 +29,11 @@ const project = new HybridModule({
     workflow: false,
   },
   renovatebot: true,
+  renovatebotOptions: {
+    overrideConfig: {
+      lockFileMaintenance: { enabled: true },
+    },
+  },
   repositoryUrl:
     'https://github.com/Hi-Fi/terraform-cdk-serverless-github-actions-runner-controller.git',
   peerDeps: [
