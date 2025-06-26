@@ -36,14 +36,14 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-sdk/client-ecs": "3.835.0",
+    "@aws-sdk/client-ecs": "3.837.0",
     "@biomejs/biome": "^2",
     "@cdktf/provider-aws": "21.0.0",
     "@cdktf/provider-azurerm": "14.3.0",
     "@cdktf/provider-google": "16.3.0",
     "@cdktf/provider-null": "11.0.0",
     "@cdktf/provider-random": "12.0.0",
-    "@nikovirtala/projen-vitest": "2.0.50",
+    "@nikovirtala/projen-vitest": "2.0.51",
     "@types/node": "ts5.7",
     "@vitest/coverage-v8": "^3",
     "cdktf": "0.21.0",
