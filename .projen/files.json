@@ -9,7 +9,6 @@
     ".projen/deps.json",
     ".projen/files.json",
     ".projen/tasks.json",
-    "biome.jsonc",
     "LICENSE",
     "renovate.json5",
     "scripts/copy-modules.sh",

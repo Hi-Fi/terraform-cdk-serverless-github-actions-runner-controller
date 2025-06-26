@@ -822,7 +822,7 @@ exports[`Should synthesize snapshot for construct > without container support on
       },
       "azurerm": {
         "source": "azurerm",
-        "version": "4.32.0"
+        "version": "4.34.0"
       },
       "random": {
         "source": "hashicorp/random",
@@ -1104,7 +1104,7 @@ exports[`Should synthesize snapshot for construct > without container support on
     "required_providers": {
       "google": {
         "source": "google",
-        "version": "6.38.0"
+        "version": "6.41.0"
       },
       "null": {
         "source": "null",
