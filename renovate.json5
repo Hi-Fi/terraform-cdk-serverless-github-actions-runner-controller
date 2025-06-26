@@ -36,8 +36,8 @@
     "typescript",
     "vitest",
     "@vitest/coverage-v8",
-    "@cdktf/tf-module-stack",
-    "projen"
+    "projen",
+    "@cdktf/tf-module-stack"
   ],
   "lockFileMaintenance": {
     "enabled": true
