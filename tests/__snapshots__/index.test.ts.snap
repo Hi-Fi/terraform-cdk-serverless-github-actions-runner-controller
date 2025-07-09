@@ -1104,7 +1104,7 @@ exports[`Should synthesize snapshot for construct > without container support on
     "required_providers": {
       "google": {
         "source": "google",
-        "version": "6.42.0"
+        "version": "6.43.0"
       },
       "null": {
         "source": "null",
