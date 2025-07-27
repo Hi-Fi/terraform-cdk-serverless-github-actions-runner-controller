@@ -171,7 +171,7 @@ exports[`Should synthesize snapshot for construct > with container support on > 
     "required_providers": {
       "aws": {
         "source": "aws",
-        "version": "6.4.0"
+        "version": "6.5.0"
       }
     }
   },
@@ -326,7 +326,7 @@ exports[`Should synthesize snapshot for construct > without container support on
     "required_providers": {
       "aws": {
         "source": "aws",
-        "version": "6.4.0"
+        "version": "6.5.0"
       }
     }
   },
@@ -1104,7 +1104,7 @@ exports[`Should synthesize snapshot for construct > without container support on
     "required_providers": {
       "google": {
         "source": "google",
-        "version": "6.44.0"
+        "version": "6.45.0"
       },
       "null": {
         "source": "null",
